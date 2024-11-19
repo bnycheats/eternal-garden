@@ -1,13 +1,9 @@
 import { useMatches } from "react-router-dom";
 
 interface Handle {
-  title?: {
-    id: string;
-    hint?: string;
-    template: string;
-    [key: string]: any;
-  };
+  title?: string;
   showPageTitle?: boolean;
+  showBack?: boolean;
 }
 
 const useRouteHandler = () => {

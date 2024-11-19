@@ -1,13 +1,9 @@
 import Spinner from "@/components/Spinner";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Root from "./Root";
+import { routes } from "./Routes";
 
-const router = createBrowserRouter(createRoutesFromElements(Root), {
+const router = createBrowserRouter(routes, {
   basename: import.meta.env.BASE_URL,
 });
 

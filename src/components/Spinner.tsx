@@ -1,4 +1,4 @@
-import { cn } from "@/utils";
+import { cn } from "@/lib/utils";
 
 const Spinner = (props: SpinnerProps) => {
   const { className, centered, fullScreen } = props;
