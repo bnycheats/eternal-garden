@@ -1,10 +1,15 @@
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import LoginForm from './components/LoginForm';
+
 export function Component() {
   return (
-    <div>
-      <span className="mb-1.5 block font-medium">Login</span>
-      <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-        Welcome
-      </h2>
+    <div className="login-bg">
+      <Card className="absolute left-1/2 border-0 top-1/4 w-[400px] bg-white -translate-x-1/2">
+        <CardHeader className="text-2xl text-center">ADMINISTRATOR</CardHeader>
+        <CardContent>
+          <LoginForm />
+        </CardContent>
+      </Card>
     </div>
   );
 }
