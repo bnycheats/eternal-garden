@@ -9,8 +9,8 @@ export function Component() {
 
   const onInit = () => {
     if (handle?.title) {
-      document.title = `Fyorin Admin | ${handle.title}`;
-    } else document.title = "Fyorin Admin";
+      document.title = `Eternal Garden | ${handle.title}`;
+    } else document.title = "Eternal Garden";
   };
 
   useEffect(onInit, [handle]);

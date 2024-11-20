@@ -45,8 +45,6 @@ module.exports = {
       success: "#219653",
       danger: "#D34053",
       warning: "#FFA70B",
-      active: "#dff7f4",
-      green: "#008375",
     },
     screens: {
       "2xsm": "375px",
@@ -274,6 +272,9 @@ module.exports = {
       addUtilities({
         ".webkit-text-fill-white": {
           "-webkit-text-fill-color": `${theme("colors.body")}`,
+        },
+        ".pointer-events-stroke": {
+          "pointer-events": "stroke",
         },
       });
     }),

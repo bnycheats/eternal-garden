@@ -1,11 +1,11 @@
 import useRouteHandler from "@/hooks/useRouteHandler";
-// import Logo from "@/images/logo/logo-icon.svg";
-// import { paths } from "@/navigation/Routes";
+import { paths } from "@/navigation/Routes";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import AvatarDropdown from "./AvatarDropdown";
+import DarkModeSwitcher from "./DarkModeSwitcher";
 
 function Header(props: HeaderProps) {
   const { setSidebarOpen, sidebarOpen } = props;
@@ -72,14 +72,19 @@ function Header(props: HeaderProps) {
             </span>
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
-          {/* <Link className="block flex-shrink-0 lg:hidden" to={paths.root}>
-            <img src={Logo} alt="Logo" />
-          </Link> */}
+          <Link className="block flex-shrink-0 lg:hidden" to={paths.root}>
+            <h1 className="font-bold text-xl">CMTS</h1>
+          </Link>
         </div>
 
         <div className="hidden sm:block"></div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
+          <ul className="flex items-center gap-2 2xsm:gap-4">
+            {/* <!-- Dark Mode Toggler --> */}
+            <DarkModeSwitcher />
+            {/* <!-- Dark Mode Toggler --> */}
+          </ul>
           <AvatarDropdown />
         </div>
       </div>

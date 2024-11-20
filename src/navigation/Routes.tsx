@@ -7,6 +7,16 @@ export const paths = {
   root: "/",
   authenticated: {
     DASHBOARD: "/dashboard",
+    BURIAL_SPACE: "/burial-space",
+    REPORTS: "/reports",
+    SALES: "/sales",
+    CLIENTS: "/clients",
+    DECEASED: "/deceased",
+    MAP_EDITOR: "/map-editor",
+    ACTIVITY_LOGS: "/activity-logs",
+    USER_LOGS: "/user-logs",
+    PENDING_BURIAL: "/pending-burial",
+    SCHEDULE: "/schedule",
   },
   public: {
     LOGIN: "/login",

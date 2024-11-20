@@ -1,3 +1,5 @@
+import CardContainer from "@/components/CardContainer";
+
 export function Component() {
-  return <div>Dashboard</div>;
+  return <CardContainer>Dashboard</CardContainer>;
 }

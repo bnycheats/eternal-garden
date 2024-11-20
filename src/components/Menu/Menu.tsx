@@ -2,7 +2,7 @@ import MenuItem, { type MenuItemProps } from "./MenuItem";
 
 function Menu(props: MenuProps) {
   return (
-    <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
+    <nav className="mt-2 px-4 py-4 lg:mt-6 lg:px-6">
       {props.model.map((item, index) => (
         <div key={index}>
           {item.label && (

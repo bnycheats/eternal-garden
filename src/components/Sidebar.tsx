@@ -3,8 +3,10 @@ import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { IconContext } from "react-icons";
 import { useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import Menu, { MenuModelType } from "./Menu";
+import { paths } from "@/navigation/Routes";
 
 function Sidebar({
   model,
@@ -64,11 +66,9 @@ function Sidebar({
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        {/* <NavLink to="/">
-          <div className="h-[32px] w-[176px]">
-            <img src={Logo} alt="Logo" className="" />
-          </div>
-        </NavLink> */}
+        <NavLink to={paths.root}>
+          <h1 className="font-bold text-2xl text-white">CMTS</h1>
+        </NavLink>
         <button
           ref={trigger}
           className="block lg:hidden"

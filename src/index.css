@@ -8,24 +8,6 @@
     --secondary-color: #6a3bf2;
     @apply relative z-1 bg-whiten font-satoshi text-base font-normal text-body;
   }
-  body::before {
-    content: "";
-    background-image: url("../dist/images/logo/logo-bg.svg");
-    opacity: 0.05;
-    pointer-events: none;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    width: 80%;
-    min-width: 400px;
-    max-width: 1200px;
-    margin-bottom: clamp(-200px, -13.3%, -67px);
-    padding-bottom: clamp(400px, 80%, 1200px);
-    display: block;
-    position: fixed;
-    bottom: 0px;
-    background-position: center center;
-    right: clamp(-200px, -13.3%, -67px);
-  }
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
