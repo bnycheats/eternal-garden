@@ -4,13 +4,16 @@ import queryClient from '@/utils/query-client';
 
 import Navigation from './navigation';
 import { Toaster } from './components/ui/toaster';
+import { AuthProvider } from './providers/authProvider';
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <IconContext.Provider value={{ className: 'fill-current text-2xl' }}>
-        <Toaster />
-        <Navigation />
+        <AuthProvider>
+          <Toaster />
+          <Navigation />
+        </AuthProvider>
       </IconContext.Provider>
     </QueryClientProvider>
   );

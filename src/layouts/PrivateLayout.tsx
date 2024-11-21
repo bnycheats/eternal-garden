@@ -1,13 +1,13 @@
-import { Suspense, useState } from "react";
-import useRouteHandler from "@/hooks/useRouteHandler";
-import { AiOutlineLeft } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
+import { Suspense, useState } from 'react';
+import useRouteHandler from '@/hooks/useRouteHandler';
+import { AiOutlineLeft } from 'react-icons/ai';
+import { Outlet } from 'react-router-dom';
 
-import Header from "@/components/Header";
-import { MenuModelType } from "@/components/Menu";
-import Sidebar from "@/components/Sidebar";
-import { Button } from "@/components/ui/button";
-import { getMenus } from "../helpers/getMenus";
+import Header from '@/components/Header';
+import { MenuModelType } from '@/components/Menu';
+import Sidebar from '@/components/Sidebar';
+import { Button } from '@/components/ui/button';
+import { getMenus } from '../helpers/getMenus';
 
 export function Component() {
   const handle = useRouteHandler();
@@ -22,11 +22,7 @@ export function Component() {
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
         <Suspense>
-          <Sidebar
-            model={menuItems}
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-          />
+          <Sidebar model={menuItems} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </Suspense>
 
         {/* <!-- ===== Sidebar End ===== --> */}
@@ -40,13 +36,10 @@ export function Component() {
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {(handle?.showBack ||
-                (handle?.showPageTitle && handle?.title)) && (
+              {(handle?.showBack || (handle?.showPageTitle && handle?.title)) && (
                 <div className="mb-6 flex justify-between gap-3">
                   {handle?.showPageTitle && handle?.title && (
-                    <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-                      {handle.title}
-                    </h2>
+                    <h2 className="text-title-md2 font-semibold text-black dark:text-white">{handle.title}</h2>
                   )}
                   {handle?.showBack && (
                     <Button

@@ -1,20 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
-import { AiOutlineLogout, AiOutlineSecurityScan } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { Transition } from "react-transition-group";
+import { useEffect, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { AiOutlineLogout, AiOutlineSecurityScan } from 'react-icons/ai';
+import { Link, useNavigate } from 'react-router-dom';
+import { Transition } from 'react-transition-group';
 
-import Avatar from "./Avatar";
+import Avatar from './Avatar';
+import useAuth from '@/hooks/useAuth';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '@/supabase-client/mutations/auth';
+import { paths } from '@/navigation/Routes';
+import { useToast } from '@/hooks/use-toast';
+import Spinner from './Spinner';
 
 const transitionClasses = {
-  entering: "opacity-0",
-  entered: "opacity-100",
-  exiting: "opacity-0",
-  exited: "opacity-0",
-  unmounted: "",
+  entering: 'opacity-0',
+  entered: 'opacity-100',
+  exiting: 'opacity-0',
+  exited: 'opacity-0',
+  unmounted: '',
 };
 
 function AvatarDropdown() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { session } = useAuth();
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -22,26 +32,34 @@ function AvatarDropdown() {
 
   const DROPDOWN_MENU = [
     {
-      name: "Security",
-      href: "/settings/security",
+      name: 'Security',
+      href: '/settings/security',
       icon: <AiOutlineSecurityScan />,
     },
   ];
+
+  const logoutMutation = useMutation({
+    mutationFn: () => logout(),
+    onSuccess: () => navigate(paths.public.LOGIN),
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: error.message,
+      });
+    },
+  });
+
+  const handleLogout = () => logoutMutation.mutate();
 
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
-      if (
-        !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
+      if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target)) return;
       setDropdownOpen(false);
     };
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
+    document.addEventListener('click', clickHandler);
+    return () => document.removeEventListener('click', clickHandler);
   });
 
   // close if the esc key is pressed
@@ -50,29 +68,21 @@ function AvatarDropdown() {
       if (!dropdownOpen || keyCode !== 27) return;
       setDropdownOpen(false);
     };
-    document.addEventListener("keydown", keyHandler);
-    return () => document.removeEventListener("keydown", keyHandler);
+    document.addEventListener('keydown', keyHandler);
+    return () => document.removeEventListener('keydown', keyHandler);
   });
 
   return (
     <div className="relative">
-      <button
-        ref={trigger}
-        onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-4"
-      >
+      <button ref={trigger} onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-4">
         <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Test@yahoo.com
-          </span>
+          <span className="block text-sm font-medium text-black dark:text-white">{session?.user.email}</span>
         </span>
 
-        <Avatar name="Test@yahoo.com" />
+        <Avatar name={session?.user.email} />
 
         <svg
-          className={`hidden fill-current transition-all duration-200 sm:block ${
-            dropdownOpen ? "rotate-180" : ""
-          }`}
+          className={`hidden fill-current transition-all duration-200 sm:block ${dropdownOpen ? 'rotate-180' : ''}`}
           width="12"
           height="8"
           viewBox="0 0 12 8"
@@ -122,9 +132,13 @@ function AvatarDropdown() {
                 </li>
               ))}
             </ul>
-            <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+            >
               <AiOutlineLogout />
               Logout
+              {logoutMutation.isPending && <Spinner className="h-5 w-5" />}
             </button>
           </div>
         )}
