@@ -38,7 +38,7 @@ const spaces = [
 export function Component() {
   return (
     <IconContext.Provider value={{ className: 'text-white text-7xl' }}>
-      <div className="grid gap-5 grid-cols-2">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2">
         {spaces.map((item, index) => (
           <Card key={index} className="flex gap-2 rounded-none">
             <div className={`p-4 ${item.color}`}>{item.icon}</div>
