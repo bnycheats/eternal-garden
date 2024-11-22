@@ -9,6 +9,8 @@ export const paths = {
   authenticated: {
     DASHBOARD: '/dashboard',
     BURIAL_SPACE: '/burial-space',
+    COFFIN_CRYPT: '/coffin-crypt',
+    COFFIN_CRYPT_DETAILS: '/coffin-crypt/:id',
     REPORTS: '/reports',
     SALES: '/sales',
     CLIENTS: '/clients',
@@ -70,6 +72,26 @@ export const routes: Array<RouteObject> = [
         handle: {
           title: 'Burial Space',
           showPageTitle: true,
+        },
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: paths.authenticated.COFFIN_CRYPT,
+        lazy: () => import('@/pages/coffin-crypt/Page'),
+        handle: {
+          title: 'Coffin Crypt List',
+          showPageTitle: true,
+          showBack: true,
+        },
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: paths.authenticated.COFFIN_CRYPT_DETAILS,
+        lazy: () => import('@/pages/coffin-crypt/Details'),
+        handle: {
+          title: 'Coffin Crypt Details',
+          showPageTitle: true,
+          showBack: true,
         },
         errorElement: <ErrorBoundary />,
       },
