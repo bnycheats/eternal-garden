@@ -43,7 +43,7 @@ export const routes: Array<RouteObject> = [
     children: [
       {
         path: paths.public.LOGIN,
-        lazy: () => import('@/pages/login/Login'),
+        lazy: () => import('@/pages/login/Page'),
         handle: {
           title: 'Login',
         },
@@ -57,9 +57,19 @@ export const routes: Array<RouteObject> = [
     children: [
       {
         path: paths.authenticated.DASHBOARD,
-        lazy: () => import('@/pages/dashboard/Dashboard'),
+        lazy: () => import('@/pages/dashboard/Page'),
         handle: {
           title: 'Dashboard',
+          showPageTitle: true,
+        },
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: paths.authenticated.BURIAL_SPACE,
+        lazy: () => import('@/pages/burial-space/Page'),
+        handle: {
+          title: 'Burial Space',
+          showPageTitle: true,
         },
         errorElement: <ErrorBoundary />,
       },
