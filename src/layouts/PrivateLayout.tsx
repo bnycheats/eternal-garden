@@ -6,7 +6,6 @@ import { Outlet } from 'react-router-dom';
 import Header from '@/components/Header';
 import { MenuModelType } from '@/components/Menu';
 import Sidebar from '@/components/Sidebar';
-import { Button } from '@/components/ui/button';
 import { getMenus } from '../helpers/getMenus';
 
 export function Component() {
