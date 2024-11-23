@@ -37,22 +37,17 @@ export function Component() {
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               {(handle?.showBack || (handle?.showPageTitle && handle?.title)) && (
-                <div className="mb-6 flex justify-between gap-3">
-                  {handle?.showPageTitle && handle?.title && (
-                    <h2 className="text-title-md2 font-semibold text-black dark:text-white">{handle.title}</h2>
-                  )}
+                <div className="mb-6 flex items-center gap-4">
                   {handle?.showBack && (
-                    <Button
-                      className="flex h-auto text-lg font-bold lg:hidden"
-                      variant="ghost"
-                      size="sm"
+                    <AiOutlineLeft
+                      className="cursor-pointer"
                       onClick={() => {
                         history.back();
                       }}
-                    >
-                      <AiOutlineLeft />
-                      Back
-                    </Button>
+                    />
+                  )}
+                  {handle?.showPageTitle && handle?.title && (
+                    <h2 className="text-title-md2 font-semibold text-black dark:text-white">{handle.title}</h2>
                   )}
                 </div>
               )}

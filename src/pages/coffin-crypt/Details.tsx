@@ -9,7 +9,7 @@ import Legend from './components/Legend';
 export function Component() {
   const { id } = useParams();
 
-  const { data, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['coffinCrypt'],
     queryFn: () => getCoffinCrypt(id ?? ''),
   });
@@ -22,7 +22,7 @@ export function Component() {
   return (
     <Fragment>
       <Legend />
-      {isFetching ? (
+      {isLoading ? (
         <NichesSkeletonCard />
       ) : (
         <Fragment>

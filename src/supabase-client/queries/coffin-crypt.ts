@@ -1,5 +1,6 @@
 import supabase from '@/supabase-client';
-import { type CoffinCryptResponse } from '@/types/coffin-crypt-types';
+
+import {  type CoffinCryptResponse } from '@/types/coffin-crypt-types';
 
 export async function getCoffinCryptList() {
   const { data, error } = await supabase.from('coffin_crypt').select('*');

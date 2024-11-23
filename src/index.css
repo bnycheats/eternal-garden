@@ -30,6 +30,8 @@
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+    --success: 158 95% 34%;
+    --success-foreground: 0 0% 100%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
@@ -57,6 +59,8 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+    --success: 158 95% 34%;
+    --success-foreground: 0 0% 100%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
@@ -76,13 +80,13 @@
     @apply inline-flex items-center justify-center gap-2.5 rounded-md bg-secondary px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
   }
   .btn-success {
-    @apply inline-flex items-center justify-center gap-2.5 rounded-md bg-success px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
+    @apply bg-success inline-flex items-center justify-center gap-2.5 rounded-md px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2.5 rounded-md bg-danger px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
+    @apply bg-danger inline-flex items-center justify-center gap-2.5 rounded-md px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
   }
   .btn-warning {
-    @apply inline-flex items-center justify-center gap-2.5 rounded-md bg-warning px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
+    @apply bg-warning inline-flex items-center justify-center gap-2.5 rounded-md px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;
   }
   .btn-dark {
     @apply inline-flex items-center justify-center gap-2.5 rounded-md bg-black px-3 py-1.5 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10;

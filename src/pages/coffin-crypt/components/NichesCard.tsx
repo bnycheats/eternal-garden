@@ -7,8 +7,8 @@ function NichesCard(props: NichesCardProps) {
   const { slots, title, column } = props;
   return (
     <CardContainer>
-      <h1 className="text-lg">{title} - Front</h1>
-      <div className="overflow-x-scroll">
+      <h1 className="text-lg">{title}</h1>
+      <div className="overflow-x-auto">
         <div
           className="mt-4 flex flex-wrap gap-3"
           style={{
