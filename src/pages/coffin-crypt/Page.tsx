@@ -7,6 +7,7 @@ import CoffinSkeletonCard from './components/CoffinSkeletonCard';
 import { Fragment } from 'react/jsx-runtime';
 import { Button } from '@/components/ui/button';
 import AddBuildingFormDialog from './components/AddBuildingFormDialog';
+import UpdateBuildingFormDialog from './components/UpdateBuildingFormDialog';
 import { useState } from 'react';
 import DeleteBuildingAlert from './components/DeleteBuildingAlert';
 import { type CoffinCryptResponse } from '@/types/coffin-crypt-types';
@@ -15,8 +16,10 @@ export function Component() {
   const navigate = useNavigate();
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [coffinDetails, setCoffinDetails] = useState<CoffinCryptResponse | null>(null);
+  const [updateCoffinDetails, setUpdateCoffinDetails] = useState<CoffinCryptResponse | null>(null);
+  const [deleteCoffinDetails, setDeleteCoffinDetails] = useState<CoffinCryptResponse | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['getCoffinCryptList'],
@@ -25,25 +28,38 @@ export function Component() {
 
   const handleNavigate = (path: string) => () => navigate(`${paths.authenticated.COFFIN_CRYPT}/${path}`);
 
-  const handleRemove = (details: CoffinCryptResponse) => (e: React.MouseEvent<SVGElement>) => {
+  const handleRemove = (details: CoffinCryptResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setOpenDeleteDialog(true);
-    setCoffinDetails(details);
+    setDeleteCoffinDetails(details);
   };
 
-  const closeAddModal = () => setOpenAddDialog(false);
+  const handleEdit = (details: CoffinCryptResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpenUpdateDialog(true);
+    setUpdateCoffinDetails(details);
+  };
 
   const handleOpenAddDialog = () => setOpenAddDialog(true);
 
+  const closeAddModal = () => setOpenAddDialog(false);
+  const closeUpdateModal = () => {
+    setOpenUpdateDialog(false);
+    setUpdateCoffinDetails(null);
+  };
   const closeDeleteModal = () => setOpenDeleteDialog(false);
 
   return (
     <Fragment>
       <AddBuildingFormDialog open={openAddDialog} closeModal={closeAddModal} />
+      {updateCoffinDetails && (
+        <UpdateBuildingFormDialog details={updateCoffinDetails} open={openUpdateDialog} closeModal={closeUpdateModal} />
+      )}
       <DeleteBuildingAlert
-        id={coffinDetails?.id ?? ''}
-        title={coffinDetails?.title ?? ''}
+        id={deleteCoffinDetails?.id ?? ''}
+        title={deleteCoffinDetails?.title ?? ''}
         open={openDeleteDialog}
         closeModal={closeDeleteModal}
       />
@@ -58,6 +74,7 @@ export function Component() {
               title={item.title}
               handleNavigate={handleNavigate(item.id)}
               handleRemove={handleRemove(item)}
+              handleEdit={handleEdit(item)}
             />
           ))
         )}

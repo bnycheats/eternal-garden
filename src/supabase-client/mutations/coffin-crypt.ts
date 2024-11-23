@@ -13,6 +13,16 @@ export async function addCoffinCrypt(payload: z.infer<typeof AddBuildingFormSche
   return data as CoffinCryptResponse;
 }
 
+export async function updateCoffinCrypt(id: string, payload: z.infer<typeof AddBuildingFormSchema>) {
+  const { data, error } = await supabase.from('coffin_crypt').update(payload).eq('id', id).single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data as CoffinCryptResponse;
+}
+
 export async function deleteCoffinCrypt(id: string) {
   const { error } = await supabase.from('coffin_crypt').delete().eq('id', id);
 
