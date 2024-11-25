@@ -11,6 +11,8 @@ export const paths = {
     BURIAL_SPACE: '/burial-space',
     COFFIN_CRYPT: '/coffin-crypt',
     COFFIN_CRYPT_DETAILS: '/coffin-crypt/:id',
+    BONE_CRYPT: '/bone-crypt',
+    BONE_CRYPT_DETAILS: '/bone-crypt/:id',
     REPORTS: '/reports',
     SALES: '/sales',
     CLIENTS: '/clients',
@@ -90,6 +92,26 @@ export const routes: Array<RouteObject> = [
         lazy: () => import('@/pages/coffin-crypt/Details'),
         handle: {
           title: 'Coffin Crypt Details',
+          showPageTitle: true,
+          showBack: true,
+        },
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: paths.authenticated.BONE_CRYPT,
+        lazy: () => import('@/pages/bone-crypt/Page'),
+        handle: {
+          title: 'Bone Crypt List',
+          showPageTitle: true,
+          showBack: true,
+        },
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: paths.authenticated.BONE_CRYPT_DETAILS,
+        lazy: () => import('@/pages/bone-crypt/Details'),
+        handle: {
+          title: 'Bone Crypt Details',
           showPageTitle: true,
           showBack: true,
         },

@@ -10,7 +10,7 @@ export function Component() {
   const { id } = useParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getCrypt'],
+    queryKey: ['getCoffinCrypt'],
     queryFn: () => getCrypt(id ?? ''),
   });
 

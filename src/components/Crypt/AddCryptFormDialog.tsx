@@ -9,33 +9,36 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { AddBuildingFormSchema } from '@/types/coffin-crypt-types';
+import { AddCryptFormSchema, CryptType } from '@/types/crypt-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addCoffinCrypt } from '@/supabase-client/mutations/coffin-crypt';
+import { addCrypt } from '@/supabase-client/mutations/crypt';
 
-function AddBuildingFormDialog(props: AddBuildingFormDialogProps) {
-  const { closeModal, ...other } = props;
+function AddCryptFormDialog(props: AddCryptFormDialogProps) {
+  const { closeModal, crypt_type, queryKey, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof AddBuildingFormSchema>>({
-    resolver: zodResolver(AddBuildingFormSchema),
+  const form = useForm<z.infer<typeof AddCryptFormSchema>>({
+    resolver: zodResolver(AddCryptFormSchema),
     defaultValues: {
-      title: '',
-      column: 0,
-      slots: 0,
+      name: '',
+      rows: null,
+      columns: null,
+      crypt_type,
+      lat: null,
+      lon: null,
     },
   });
 
   const addMutation = useMutation({
-    mutationFn: (request: z.infer<typeof AddBuildingFormSchema>) => addCoffinCrypt(request),
+    mutationFn: (request: z.infer<typeof AddCryptFormSchema>) => addCrypt(request),
     onSuccess: () => {
       closeModal();
       form.reset();
-      queryClient.invalidateQueries({ queryKey: ['getCoffinCryptList'] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] }).then(() => {
         toast({
           variant: 'success',
-          title: 'Coffin Crypt added successfully',
+          title: 'Crypt added successfully',
         });
       });
     },
@@ -47,7 +50,7 @@ function AddBuildingFormDialog(props: AddBuildingFormDialogProps) {
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof AddBuildingFormSchema>> = (data) => addMutation.mutate(data);
+  const onSubmit: SubmitHandler<z.infer<typeof AddCryptFormSchema>> = (data) => addMutation.mutate(data);
 
   return (
     <Dialog {...other} onOpenChange={(open) => !open && closeModal()}>
@@ -59,28 +62,29 @@ function AddBuildingFormDialog(props: AddBuildingFormDialogProps) {
           <form className="space-y-5.5" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <Input type="text" placeholder="Title*" {...field} />
+                  <FormLabel>Name</FormLabel>
+                  <Input type="text" placeholder="Name*" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="slots"
+              name="rows"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Slots</FormLabel>
+                  <FormLabel>Rows</FormLabel>
                   <Input
-                    placeholder="Slots*"
+                    placeholder="Rows*"
                     type="number"
                     {...field}
+                    value={field.value ?? ''}
                     onChange={(e) => {
                       const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? '' : value);
+                      field.onChange(isNaN(value) ? null : value);
                     }}
                   />
                   <FormMessage />
@@ -89,17 +93,58 @@ function AddBuildingFormDialog(props: AddBuildingFormDialogProps) {
             />
             <FormField
               control={form.control}
-              name="column"
+              name="columns"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Column</FormLabel>
+                  <FormLabel>Columns</FormLabel>
                   <Input
-                    placeholder="Column*"
+                    placeholder="Columns*"
                     type="number"
                     {...field}
+                    value={field.value ?? ''}
                     onChange={(e) => {
                       const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? '' : value);
+                      field.onChange(isNaN(value) ? null : value);
+                    }}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lon"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Longtitude</FormLabel>
+                  <Input
+                    placeholder="Longtitude*"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      field.onChange(isNaN(value) ? null : value);
+                    }}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lat"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Latitude</FormLabel>
+                  <Input
+                    placeholder="Latitude*"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      field.onChange(isNaN(value) ? null : value);
                     }}
                   />
                   <FormMessage />
@@ -123,8 +168,10 @@ function AddBuildingFormDialog(props: AddBuildingFormDialogProps) {
   );
 }
 
-type AddBuildingFormDialogProps = {
+type AddCryptFormDialogProps = {
   closeModal: () => void;
+  crypt_type: CryptType;
+  queryKey: string;
 } & DialogProps;
 
-export default AddBuildingFormDialog;
+export default AddCryptFormDialog;

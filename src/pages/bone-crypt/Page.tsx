@@ -22,11 +22,11 @@ export function Component() {
   const [deleteDetails, setDeleteDetails] = useState<CryptResponse | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getCoffinCryptList'],
-    queryFn: () => getCryptList(CryptType.COFFIN),
+    queryKey: ['getBoneCryptList'],
+    queryFn: () => getCryptList(CryptType.BONE),
   });
 
-  const handleNavigate = (path: string) => () => navigate(`${paths.authenticated.COFFIN_CRYPT}/${path}`);
+  const handleNavigate = (path: string) => () => navigate(`${paths.authenticated.BONE_CRYPT}/${path}`);
 
   const handleRemove = (details: CryptResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -54,14 +54,14 @@ export function Component() {
   return (
     <Fragment>
       <AddCryptFormDialog
-        queryKey="getCoffinCryptList"
-        crypt_type={CryptType.COFFIN}
+        queryKey="getBoneCryptList"
+        crypt_type={CryptType.BONE}
         open={openAddDialog}
         closeModal={closeAddModal}
       />
       {updateDetails && (
         <UpdateCryptFormDialog
-          queryKey="getCoffinCryptList"
+          queryKey="getBoneCryptList"
           details={updateDetails}
           open={openUpdateDialog}
           closeModal={closeUpdateModal}
@@ -69,7 +69,7 @@ export function Component() {
       )}
       <DeleteCryptAlert
         id={deleteDetails?.id ?? ''}
-        queryKey="getCoffinCryptList"
+        queryKey="getBoneCryptList"
         title={deleteDetails?.name ?? ''}
         open={openDeleteDialog}
         closeModal={closeDeleteModal}
@@ -85,9 +85,9 @@ export function Component() {
             data?.map((item, index) => (
               <CryptCard
                 key={index}
-                bgColor="bg-meta-5"
+                bgColor="bg-meta-1"
                 title={item.name}
-                desc="Coffin Crypt Bulding"
+                desc="Bone Crypt Bulding"
                 handleNavigate={handleNavigate(item.id)}
                 handleRemove={handleRemove(item)}
                 handleEdit={handleEdit(item)}

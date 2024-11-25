@@ -10,18 +10,18 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
-import { deleteCoffinCrypt } from '@/supabase-client/mutations/coffin-crypt';
+import { deleteCrypt } from '@/supabase-client/mutations/crypt';
 
-function DeleteBuildingAlert(props: DeleteBuildingAlertProps) {
-  const { closeModal, title, id, ...other } = props;
+function DeleteCryptAlert(props: DeleteCryptAlertProps) {
+  const { closeModal, title, id, queryKey, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteCoffinCrypt(id),
+    mutationFn: (id: string) => deleteCrypt(id),
     onSuccess: () => {
       closeModal();
-      queryClient.invalidateQueries({ queryKey: ['getCoffinCryptList'] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] }).then(() => {
         toast({
           variant: 'success',
           title: `${title} deleted successfully`,
@@ -53,10 +53,11 @@ function DeleteBuildingAlert(props: DeleteBuildingAlertProps) {
   );
 }
 
-type DeleteBuildingAlertProps = {
+type DeleteCryptAlertProps = {
   id: string;
   title: string;
   closeModal: () => void;
+  queryKey: string;
 } & AlertDialogProps;
 
-export default DeleteBuildingAlert;
+export default DeleteCryptAlert;
