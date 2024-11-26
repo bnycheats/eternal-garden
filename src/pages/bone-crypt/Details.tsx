@@ -26,8 +26,20 @@ export function Component() {
         <NichesSkeletonCard />
       ) : (
         <Fragment>
-          <NichesCard startAt={0} title={`${data?.name} - Front`} slots={front} columns={data?.columns ?? 0} />
-          <NichesCard startAt={front} title={`${data?.name} - Back`} slots={back} columns={data?.columns ?? 0} />
+          <NichesCard
+            handleSelectSlot={() => {}}
+            startAt={0}
+            title={`${data?.name} - Front`}
+            slots={front}
+            columns={data?.columns ?? 0}
+          />
+          <NichesCard
+            handleSelectSlot={() => {}}
+            startAt={front}
+            title={`${data?.name} - Back`}
+            slots={back}
+            columns={data?.columns ?? 0}
+          />
         </Fragment>
       )}
     </Fragment>

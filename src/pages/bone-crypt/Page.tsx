@@ -75,7 +75,7 @@ export function Component() {
         closeModal={closeDeleteModal}
       />
       <Button onClick={handleOpenAddDialog}>Add Crypt Building</Button>
-      {!data || data.length === 0 ? (
+      {!isLoading && (!data || data.length === 0) ? (
         <div className="mt-20 text-center">No data found</div>
       ) : (
         <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">

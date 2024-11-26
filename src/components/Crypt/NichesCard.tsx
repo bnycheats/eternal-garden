@@ -4,7 +4,7 @@ import Niche, { NICHE_WIDTH } from './Niche';
 const GAP = 12;
 
 function NichesCard(props: NichesCardProps) {
-  const { startAt, slots, title, columns } = props;
+  const { startAt, slots, title, columns, handleSelectSlot } = props;
   return (
     <CardContainer>
       <h1 className="text-lg">{title}</h1>
@@ -16,7 +16,7 @@ function NichesCard(props: NichesCardProps) {
           }}
         >
           {Array.from({ length: slots }).map((_, index) => (
-            <Niche key={index} number={index + 1 + startAt} />
+            <Niche key={index} handleSelectSlot={handleSelectSlot} number={index + 1 + startAt} />
           ))}
         </div>
       </div>
@@ -29,6 +29,7 @@ type NichesCardProps = {
   title: string;
   slots: number;
   columns: number;
+  handleSelectSlot: () => void;
 };
 
 export default NichesCard;
