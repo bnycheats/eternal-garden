@@ -1,7 +1,7 @@
-import Spinner from '@/components/Spinner';
-import { useToast } from '@/hooks/use-toast';
+// import Spinner from '@/components/Spinner';
+// import { useToast } from '@/hooks/use-toast';
 import { type DialogProps } from '@radix-ui/react-dialog';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+// import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import phil from 'phil-reg-prov-mun-brgy';
@@ -12,21 +12,21 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/
 import { Input } from '@/components/ui/input';
 import { Gender, IdPresented, RegisterClientFormSchema } from '@/types/profile-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addCrypt } from '@/supabase-client/mutations/crypt';
+// import { addCrypt } from '@/supabase-client/mutations/crypt';
 import FormLabelIndicator from '../FormLabelIndicator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Textarea } from '../ui/textarea';
-import supabase from '@/supabase-client';
+// import supabase from '@/supabase-client';
 
 function RegisterClientFormDialog(props: RegisterClientFormDialogProps) {
   const { closeModal, ...other } = props;
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
+  // const queryClient = useQueryClient();
+  // const { toast } = useToast();
 
-  const [indigencyFileObject, setIndigencyFileObject] = useState<DocType | null>(null);
-  const [validIdObject, setValidIdObject] = useState<DocType | null>(null);
-  const [pictureFileObject, setPictureFileObject] = useState<DocType | null>(null);
+  // const [indigencyFileObject, setIndigencyFileObject] = useState<DocType | null>(null);
+  // const [validIdObject, setValidIdObject] = useState<DocType | null>(null);
+  // const [pictureFileObject, setPictureFileObject] = useState<DocType | null>(null);
 
   const form = useForm<z.infer<typeof RegisterClientFormSchema>>({
     resolver: zodResolver(RegisterClientFormSchema),
@@ -463,9 +463,9 @@ type BarangayType = {
   mun_code: string;
 };
 
-type DocType = {
-  file: File;
-  token: string;
-};
+// type DocType = {
+//   file: File;
+//   token: string;
+// };
 
 export default RegisterClientFormDialog;
