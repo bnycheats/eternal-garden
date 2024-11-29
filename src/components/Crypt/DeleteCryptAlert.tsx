@@ -11,9 +11,10 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import { deleteCrypt } from '@/supabase-client/mutations/crypt';
+import { type CryptType } from '@/types/crypt-types';
 
 function DeleteCryptAlert(props: DeleteCryptAlertProps) {
-  const { closeModal, title, id, queryKey, ...other } = props;
+  const { closeModal, title, id, cryptType, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -21,7 +22,7 @@ function DeleteCryptAlert(props: DeleteCryptAlertProps) {
     mutationFn: (id: string) => deleteCrypt(id),
     onSuccess: () => {
       closeModal();
-      queryClient.invalidateQueries({ queryKey: [queryKey] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptList', cryptType] }).then(() => {
         toast({
           variant: 'success',
           title: `${title} deleted successfully`,
@@ -57,7 +58,7 @@ type DeleteCryptAlertProps = {
   id: string;
   title: string;
   closeModal: () => void;
-  queryKey: string;
+  cryptType?: CryptType;
 } & AlertDialogProps;
 
 export default DeleteCryptAlert;

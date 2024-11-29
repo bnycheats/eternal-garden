@@ -1,52 +1,44 @@
-import Spinner from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
-import { type DialogProps } from '@radix-ui/react-dialog';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DialogProps } from '@radix-ui/react-dialog';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import Spinner from '@/components/Spinner';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
-
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { AddCryptFormSchema, type CryptResponse } from '@/types/crypt-types';
+import { CryptFormSchema, CryptType } from '@/types/crypt-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updateCrypt } from '@/supabase-client/mutations/crypt';
+import { addCrypt } from '@/supabase-client/mutations/crypt';
+import FormLabelIndicator from '../FormLabelIndicator';
 
-function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
-  const { details, closeModal, queryKey, ...other } = props;
-  const { id, coordinates, ...otherDetails } = details;
-
-  let lat = null;
-  let lon = null;
-
-  if (coordinates) {
-    const split = coordinates.split(',');
-    lat = parseFloat(split[0]);
-    lon = parseFloat(split[1]);
-  }
-
+function AddCryptFormSheet(props: AddCryptFormSheetProps) {
+  const { closeSheet, crypt_type, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof AddCryptFormSchema>>({
-    resolver: zodResolver(AddCryptFormSchema),
+  const form = useForm<z.infer<typeof CryptFormSchema>>({
+    resolver: zodResolver(CryptFormSchema),
     defaultValues: {
-      ...otherDetails,
-      lat,
-      lon,
+      name: '',
+      rows: null,
+      columns: null,
+      crypt_type,
+      lat: null,
+      lon: null,
     },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: (request: z.infer<typeof AddCryptFormSchema>) => updateCrypt(id, request),
+  const addMutation = useMutation({
+    mutationFn: (request: z.infer<typeof CryptFormSchema>) => addCrypt(request),
     onSuccess: () => {
-      closeModal();
+      closeSheet();
       form.reset();
-      queryClient.invalidateQueries({ queryKey: [queryKey] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptList', crypt_type] }).then(() => {
         toast({
           variant: 'success',
-          title: 'Crypt updated successfully',
+          title: 'Crypt added successfully',
         });
       });
     },
@@ -58,23 +50,25 @@ function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof AddCryptFormSchema>> = (data) => updateMutation.mutate(data);
+  const onSubmit: SubmitHandler<z.infer<typeof CryptFormSchema>> = (data) => addMutation.mutate(data);
 
   return (
-    <Dialog {...other} onOpenChange={(open) => !open && closeModal()}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="mb-2">Update Crypt Building</DialogTitle>
-        </DialogHeader>
+    <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Add Crypt Building</SheetTitle>
+        </SheetHeader>
         <Form {...form}>
-          <form className="space-y-5.5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="mt-4 space-y-5.5" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <Input type="text" placeholder="Name*" {...field} />
+                  <FormLabel>
+                    Name <FormLabelIndicator isOptional={CryptFormSchema.shape[field.name].isOptional()} />
+                  </FormLabel>
+                  <Input type="text" placeholder="---" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -86,7 +80,7 @@ function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
                 <FormItem>
                   <FormLabel>Rows</FormLabel>
                   <Input
-                    placeholder="Rows*"
+                    placeholder="---"
                     type="number"
                     {...field}
                     value={field.value ?? ''}
@@ -106,7 +100,7 @@ function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
                 <FormItem>
                   <FormLabel>Columns</FormLabel>
                   <Input
-                    placeholder="Columns*"
+                    placeholder="---"
                     type="number"
                     {...field}
                     value={field.value ?? ''}
@@ -126,7 +120,7 @@ function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
                 <FormItem>
                   <FormLabel>Longtitude</FormLabel>
                   <Input
-                    placeholder="Longtitude*"
+                    placeholder="---"
                     type="number"
                     {...field}
                     value={field.value ?? ''}
@@ -146,7 +140,7 @@ function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
                 <FormItem>
                   <FormLabel>Latitude</FormLabel>
                   <Input
-                    placeholder="Latitude*"
+                    placeholder="---"
                     type="number"
                     {...field}
                     value={field.value ?? ''}
@@ -159,27 +153,25 @@ function UpdateCryptFormDialog(props: UpdateCryptFormDialogProps) {
                 </FormItem>
               )}
             />
-            <div>
+            <SheetFooter>
               <Button
                 type="submit"
-                className="w-full p-4"
-                disabled={updateMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
+                disabled={addMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
               >
-                {updateMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
-                Update
+                {addMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
+                Add
               </Button>
-            </div>
+            </SheetFooter>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
 
-type UpdateCryptFormDialogProps = {
-  details: CryptResponse;
-  closeModal: () => void;
-  queryKey: string;
+type AddCryptFormSheetProps = {
+  closeSheet: () => void;
+  crypt_type: CryptType;
 } & DialogProps;
 
-export default UpdateCryptFormDialog;
+export default AddCryptFormSheet;

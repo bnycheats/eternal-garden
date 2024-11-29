@@ -1,10 +1,11 @@
 import CardContainer from '@/components/CardContainer';
 import Niche, { NICHE_WIDTH } from './Niche';
+import { Face } from '@/types/crypt-types';
 
 const GAP = 12;
 
 function NichesCard(props: NichesCardProps) {
-  const { startAt, slots, title, columns, handleSelectSlot } = props;
+  const { occupies, startAt, slots, title, columns, handleSelectSlot, face } = props;
   return (
     <CardContainer>
       <h1 className="text-lg">{title}</h1>
@@ -15,9 +16,17 @@ function NichesCard(props: NichesCardProps) {
             width: (NICHE_WIDTH + GAP) * (columns ?? 20) - GAP,
           }}
         >
-          {Array.from({ length: slots }).map((_, index) => (
-            <Niche key={index} handleSelectSlot={handleSelectSlot} number={index + 1 + startAt} />
-          ))}
+          {Array.from({ length: slots }).map((_, index) => {
+            const slot = index + 1 + startAt;
+            return (
+              <Niche
+                key={index}
+                isOccupied={occupies?.includes(slot.toString())}
+                handleSelectSlot={() => handleSelectSlot(slot, face)}
+                slot={slot}
+              />
+            );
+          })}
         </div>
       </div>
     </CardContainer>
@@ -25,11 +34,13 @@ function NichesCard(props: NichesCardProps) {
 }
 
 type NichesCardProps = {
+  face: Face;
   startAt: number;
   title: string;
   slots: number;
+  occupies: Array<string>;
   columns: number;
-  handleSelectSlot: () => void;
+  handleSelectSlot: (slot: number, face: Face) => void;
 };
 
 export default NichesCard;

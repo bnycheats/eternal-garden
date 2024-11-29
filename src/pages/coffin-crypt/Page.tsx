@@ -1,80 +1,73 @@
 import { Fragment, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getCryptList } from '@/supabase-client/queries/crypt';
-import { useNavigate } from 'react-router-dom';
-
-import { paths } from '@/navigation/Routes';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import CryptCard from '@/components/Crypt/CryptCard';
 import CryptkeletonCard from '@/components/Crypt/CryptkeletonCard';
 import { Button } from '@/components/ui/button';
-import AddCryptFormDialog from '@/components/Crypt/AddCryptFormDialog';
-import UpdateCryptFormDialog from '@/components/Crypt/UpdateCryptFormDialog';
 import DeleteCryptAlert from '@/components/Crypt/DeleteCryptAlert';
 import { CryptType, type CryptResponse } from '@/types/crypt-types';
+import AddCryptFormSheet from '@/components/Crypt/AddCryptFormSheet';
+import UpdateCryptFormSheet from '@/components/Crypt/UpdateCryptFormSheet';
+import getCryptListQuery from '@/queries/getCryptListQuery';
+
+export { default as loader } from './loaders/pageLoader';
 
 export function Component() {
   const navigate = useNavigate();
+  const initialData = useLoaderData() as Array<CryptResponse>;
 
-  const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openAddSheet, setOpenAddSheet] = useState(false);
+  const [openUpdateSheet, setOpenUpdateSheet] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [updateDetails, setUpdateDetails] = useState<CryptResponse | null>(null);
   const [deleteDetails, setDeleteDetails] = useState<CryptResponse | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getCoffinCryptList'],
-    queryFn: () => getCryptList(CryptType.COFFIN),
+    ...getCryptListQuery(CryptType.COFFIN),
+    placeholderData: initialData,
   });
 
-  const handleNavigate = (path: string) => () => navigate(`${paths.authenticated.COFFIN_CRYPT}/${path}`);
+  const handleNavigate = (path: string) => () => navigate(`${path}/slots`);
 
   const handleRemove = (details: CryptResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setOpenDeleteDialog(true);
+    setOpenDeleteModal(true);
     setDeleteDetails(details);
   };
 
   const handleEdit = (details: CryptResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setOpenUpdateDialog(true);
+    setOpenUpdateSheet(true);
     setUpdateDetails(details);
   };
 
-  const handleOpenAddDialog = () => setOpenAddDialog(true);
+  const handleOpenAddSheet = () => setOpenAddSheet(true);
 
-  const closeAddModal = () => setOpenAddDialog(false);
-  const closeUpdateModal = () => {
-    setOpenUpdateDialog(false);
+  const closeAddSheet = () => setOpenAddSheet(false);
+
+  const closeUpdateSheet = () => {
+    setOpenUpdateSheet(false);
     setUpdateDetails(null);
   };
-  const closeDeleteModal = () => setOpenDeleteDialog(false);
+
+  const closeDeleteModal = () => setOpenDeleteModal(false);
 
   return (
     <Fragment>
-      <AddCryptFormDialog
-        queryKey="getCoffinCryptList"
-        crypt_type={CryptType.COFFIN}
-        open={openAddDialog}
-        closeModal={closeAddModal}
-      />
+      <AddCryptFormSheet crypt_type={CryptType.COFFIN} open={openAddSheet} closeSheet={closeAddSheet} />
       {updateDetails && (
-        <UpdateCryptFormDialog
-          queryKey="getCoffinCryptList"
-          details={updateDetails}
-          open={openUpdateDialog}
-          closeModal={closeUpdateModal}
-        />
+        <UpdateCryptFormSheet details={updateDetails} open={openUpdateSheet} closeSheet={closeUpdateSheet} />
       )}
       <DeleteCryptAlert
         id={deleteDetails?.id ?? ''}
-        queryKey="getCoffinCryptList"
+        cryptType={deleteDetails?.crypt_type}
         title={deleteDetails?.name ?? ''}
-        open={openDeleteDialog}
+        open={openDeleteModal}
         closeModal={closeDeleteModal}
       />
-      <Button onClick={handleOpenAddDialog}>Add Crypt Building</Button>
+      <Button onClick={handleOpenAddSheet}>Add Crypt Building</Button>
       {!isLoading && (!data || data.length === 0) ? (
         <div className="mt-20 text-center">No data found</div>
       ) : (

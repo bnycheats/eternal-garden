@@ -1,20 +1,26 @@
+import { cn } from '@/lib/utils';
+
 export const NICHE_WIDTH = 60;
 
 function Niche(props: NicheProps) {
-  const { number, handleSelectSlot } = props;
+  const { slot, handleSelectSlot, isOccupied } = props;
   return (
     <div
       style={{ width: NICHE_WIDTH }}
       onClick={handleSelectSlot}
-      className="flex h-10 cursor-pointer items-center justify-center bg-meta-5 font-semibold text-white"
+      className={cn('flex h-10 cursor-pointer items-center justify-center font-semibold text-white', {
+        'bg-meta-5': !isOccupied,
+        'bg-meta-1': isOccupied,
+      })}
     >
-      {number}
+      {slot}
     </div>
   );
 }
 
 type NicheProps = {
-  number: number;
+  isOccupied: boolean;
+  slot: number;
   handleSelectSlot: () => void;
 };
 

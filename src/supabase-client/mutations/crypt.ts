@@ -1,9 +1,9 @@
 import supabase from '@/supabase-client';
 import { z } from 'zod';
 
-import { AddCryptFormSchema, type CryptResponse } from '@/types/crypt-types';
+import { CryptFormSchema, CryptSlotFormSchema, type CryptResponse } from '@/types/crypt-types';
 
-export async function addCrypt(formData: z.infer<typeof AddCryptFormSchema>) {
+export async function addCrypt(formData: z.infer<typeof CryptFormSchema>) {
   let payload = {};
   const { lat, lon, ...other } = formData;
   if (lat && lon) {
@@ -20,7 +20,7 @@ export async function addCrypt(formData: z.infer<typeof AddCryptFormSchema>) {
   return data as CryptResponse;
 }
 
-export async function updateCrypt(id: string, formData: z.infer<typeof AddCryptFormSchema>) {
+export async function updateCrypt(id: string, formData: z.infer<typeof CryptFormSchema>) {
   let payload = {};
   const { lat, lon, ...other } = formData;
   if (lat && lon) {
@@ -43,4 +43,21 @@ export async function deleteCrypt(id: string) {
   if (error) {
     throw error;
   }
+}
+
+export async function addCryptSlot(formData: z.infer<typeof CryptSlotFormSchema>) {
+  let payload = {};
+  const { lat, lon, ...other } = formData;
+  if (lat && lon) {
+    payload = { ...other, coordinates: `${lat}, ${lon}` };
+  } else {
+    payload = { ...other, coordinates: null };
+  }
+  const { data, error } = await supabase.from('crypt_slot').insert(payload).single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data as CryptResponse;
 }

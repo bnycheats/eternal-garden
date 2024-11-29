@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, redirect } from 'react-router-dom';
 import supabase from '@/supabase-client';
 import { paths } from '@/navigation/Routes';
 
-export async function authGuard({ request }: LoaderFunctionArgs) {
+export async function protectedLoader({ request }: LoaderFunctionArgs) {
   const { data, error } = await supabase.auth.getSession();
   const pathname = new URL(request.url).pathname;
 
@@ -25,4 +25,4 @@ export async function authGuard({ request }: LoaderFunctionArgs) {
   return redirect(paths.authenticated.DASHBOARD);
 }
 
-export default authGuard;
+export default protectedLoader;
