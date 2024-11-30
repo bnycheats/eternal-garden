@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
 import NotFound from '../components/NotFound';
@@ -37,129 +37,117 @@ export const routes: Array<RouteObject> = [
   {
     id: 'root',
     path: paths.root,
-    loader: protectedLoader,
     lazy: () => import('@/layouts/MainLayout'),
-  },
-  {
-    id: 'not-found',
-    path: '/*',
-    element: <NotFound />,
-  },
-  {
-    id: 'public',
-    lazy: () => import('@/layouts/PublicLayout'),
-    loader: protectedLoader,
     children: [
       {
-        path: paths.public.LOGIN,
-        lazy: () => import('@/pages/login/Page'),
-        handle: {
-          title: 'Login',
-        },
-      },
-    ],
-  },
-  {
-    id: 'authenticated',
-    lazy: () => import('@/layouts/PrivateLayout'),
-    loader: protectedLoader,
-    children: [
-      {
-        path: paths.authenticated.DASHBOARD,
-        lazy: () => import('@/pages/dashboard/Page'),
-        handle: {
-          title: 'Dashboard',
-          showPageTitle: true,
-        },
-        errorElement: <ErrorBoundary />,
+        index: true,
+        element: <Navigate to={paths.public.LOGIN} />,
       },
       {
-        path: paths.authenticated.BURIAL_SPACE,
-        lazy: () => import('@/pages/burial-space/Page'),
-        handle: {
-          title: 'Burial Space',
-          showPageTitle: true,
-        },
-        errorElement: <ErrorBoundary />,
+        id: 'not-found',
+        path: '/*',
+        element: <NotFound />,
       },
       {
-        path: paths.authenticated.COFFIN_CRYPT,
-        lazy: () => import('@/pages/coffin-crypt/Page'),
-        handle: {
-          title: 'Coffin Crypt List',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
+        id: 'public',
+        lazy: () => import('@/layouts/PublicLayout'),
+        loader: protectedLoader,
+        children: [
+          {
+            path: paths.public.LOGIN,
+            lazy: () => import('@/pages/login/Page'),
+            handle: {
+              title: 'Login',
+            },
+          },
+        ],
       },
       {
-        path: paths.authenticated.COFFIN_CRYPT_SLOTS,
-        lazy: () => import('@/pages/coffin-crypt/Slots'),
-        handle: {
-          title: 'Coffin Crypt Details',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: paths.authenticated.COFFIN_CRYPT_SLOT_DETAILS,
-        lazy: () => import('@/pages/coffin-crypt/SlotDetails'),
-        handle: {
-          title: 'Coffin Crypt Slot Details',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: paths.authenticated.BONE_CRYPT,
-        lazy: () => import('@/pages/bone-crypt/Page'),
-        handle: {
-          title: 'Bone Crypt List',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: paths.authenticated.BONE_CRYPT_SLOTS,
-        lazy: () => import('@/pages/bone-crypt/Slots'),
-        handle: {
-          title: 'Bone Crypt Details',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: paths.authenticated.BONE_CRYPT_SLOT_DETAILS,
-        lazy: () => import('@/pages/bone-crypt/SlotDetails'),
-        handle: {
-          title: 'Bone Crypt Slot Details',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: paths.authenticated.CLIENTS,
-        lazy: () => import('@/pages/clients/Page'),
-        handle: {
-          title: 'Clients',
-          showPageTitle: true,
-        },
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: paths.authenticated.CLIENTS_CREATE,
-        lazy: () => import('@/pages/clients/Create'),
-        handle: {
-          title: 'Create Client',
-          showPageTitle: true,
-          showBack: true,
-        },
-        errorElement: <ErrorBoundary />,
+        id: 'authenticated',
+        lazy: () => import('@/layouts/PrivateLayout'),
+        loader: protectedLoader,
+        children: [
+          {
+            path: paths.authenticated.DASHBOARD,
+            lazy: () => import('@/pages/dashboard/Page'),
+            handle: {
+              title: 'Dashboard',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.BURIAL_SPACE,
+            lazy: () => import('@/pages/burial-space/Page'),
+            handle: {
+              title: 'Burial Space',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.COFFIN_CRYPT,
+            lazy: () => import('@/pages/coffin-crypt/Page'),
+            handle: {
+              title: 'Coffin Crypt List',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.COFFIN_CRYPT_SLOTS,
+            lazy: () => import('@/pages/coffin-crypt/Slots'),
+            handle: {
+              title: 'Coffin Crypt Details',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.COFFIN_CRYPT_SLOT_DETAILS,
+            lazy: () => import('@/pages/coffin-crypt/SlotDetails'),
+            handle: {
+              title: 'Coffin Crypt Slot Details',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.BONE_CRYPT,
+            lazy: () => import('@/pages/bone-crypt/Page'),
+            handle: {
+              title: 'Bone Crypt List',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.BONE_CRYPT_SLOTS,
+            lazy: () => import('@/pages/bone-crypt/Slots'),
+            handle: {
+              title: 'Bone Crypt Details',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.BONE_CRYPT_SLOT_DETAILS,
+            lazy: () => import('@/pages/bone-crypt/SlotDetails'),
+            handle: {
+              title: 'Bone Crypt Slot Details',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.CLIENTS,
+            lazy: () => import('@/pages/clients/Page'),
+            handle: {
+              title: 'Clients',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.CLIENTS_CREATE,
+            lazy: () => import('@/pages/clients/Create'),
+            handle: {
+              title: 'Create Client',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+        ],
       },
     ],
   },

@@ -2,10 +2,6 @@ import supabaseClient from '@/supabase-client';
 import { Session } from '@supabase/supabase-js';
 import { PropsWithChildren, createContext, useEffect, useState } from 'react';
 
-export type AuthContextValue = {
-  session: Session | null;
-};
-
 export const AuthContext = createContext<AuthContextValue>({
   session: null,
 });
@@ -27,3 +23,7 @@ export function AuthProvider(props: PropsWithChildren) {
 
   return <AuthContext.Provider value={{ session }}>{props.children}</AuthContext.Provider>;
 }
+
+export type AuthContextValue = {
+  session: Session | null;
+};

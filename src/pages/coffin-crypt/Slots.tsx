@@ -2,11 +2,12 @@ import { useState, Fragment } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import NichesCard from '@/components/Crypt/NichesCard';
-import Legend from '@/components/Crypt/Legend';
+import Legend from './components/Legend';
 import SelectCryptSlotFormSheet from '@/components/Crypt/SelectCryptSlotFormSheet';
 import { type CryptResponse, type CryptSlotResponse, CryptSlotStatus, CryptType, Face } from '@/types/crypt-types';
 import getCryptQuery from '@/queries/getCryptQuery';
 import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
+import usePrivateHeader from '@/hooks/usePrivateHeader';
 
 export { default as loader } from '@/loaders/slotsLoader';
 
@@ -26,7 +27,6 @@ export function Component() {
 
   const { data: cryptSlot } = useQuery({ ...getCryptSlotQuery(id ?? ''), initialData: initialCryptSlot });
 
-  const occupies = cryptSlot?.map((item) => item.slot?.toString() ?? '') ?? [];
   const slots = (crypt?.rows ?? 0) * (crypt?.columns ?? 0) * 2;
 
   const front = Math.floor(slots / 2);
@@ -62,6 +62,16 @@ export function Component() {
     },
   ];
 
+  usePrivateHeader({
+    title: 'Coffin Crypt Slots',
+    showBack: true,
+    extra: (
+      <div className="flex justify-center gap-2">
+        <Legend />
+      </div>
+    ),
+  });
+
   return (
     <Fragment>
       {selectedSlot && (
@@ -82,12 +92,12 @@ export function Component() {
           closeSheet={closeAddSheet}
         />
       )}
-      <Legend />
+
       {niches.map((item, index) => (
         <NichesCard
           key={index}
           face={item.face}
-          occupies={occupies}
+          cryptSlot={cryptSlot}
           handleSelectSlot={handleSelectSlot}
           startAt={item.startAt}
           title={item.title}

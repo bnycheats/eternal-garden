@@ -1,11 +1,11 @@
 import { Suspense, useEffect } from 'react';
-import useRouteHandler from '@/hooks/useRouteHandler';
+import useRouteHandler, { type Handle } from '@/hooks/useRouteHandler';
 import { Outlet } from 'react-router-dom';
 
 import Spinner from '@/components/Spinner';
 
 export function Component() {
-  const handle = useRouteHandler();
+  const handle = useRouteHandler() as Handle;
 
   const onInit = () => {
     if (handle?.title) {

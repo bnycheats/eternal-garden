@@ -12,6 +12,7 @@ export enum CryptType {
 export enum CryptSlotStatus {
   'VACANT' = 'VACANT',
   'OCCUPIED' = 'OCCUPIED',
+  'FULL' = 'FULL',
 }
 
 export enum Face {

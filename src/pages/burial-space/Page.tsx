@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui/card';
+import usePrivateHeader from '@/hooks/usePrivateHeader';
 import { IconContext } from 'react-icons';
 import { FaBuilding, FaBone, FaHouse, FaCross } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
@@ -46,6 +47,10 @@ export function Component() {
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => () => navigate(path);
+
+  usePrivateHeader({
+    title: 'Burial Space',
+  });
 
   return (
     <IconContext.Provider value={{ className: 'text-white text-7xl' }}>

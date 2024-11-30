@@ -9,6 +9,7 @@ import { CryptType, type CryptResponse } from '@/types/crypt-types';
 import AddCryptFormSheet from '@/components/Crypt/AddCryptFormSheet';
 import UpdateCryptFormSheet from '@/components/Crypt/UpdateCryptFormSheet';
 import getCryptListQuery from '@/queries/getCryptListQuery';
+import usePrivateHeader from '@/hooks/usePrivateHeader';
 
 export { default as loader } from './loaders/pageLoader';
 
@@ -54,6 +55,17 @@ export function Component() {
 
   const closeDeleteModal = () => setOpenDeleteModal(false);
 
+  usePrivateHeader({
+    title: 'Bone Crypt List',
+    showBack: true,
+    extra: (
+      <div className="flex justify-center gap-2">
+        <Button variant="outline">Open Map </Button>
+        <Button onClick={handleOpenAddSheet}>Add Crypt Building</Button>
+      </div>
+    ),
+  });
+
   return (
     <Fragment>
       <AddCryptFormSheet crypt_type={CryptType.BONE} open={openAddSheet} closeSheet={closeAddSheet} />
@@ -67,7 +79,6 @@ export function Component() {
         open={openDeleteModal}
         closeModal={closeDeleteModal}
       />
-      <Button onClick={handleOpenAddSheet}>Add Crypt Building</Button>
       {!isLoading && (!data || data.length === 0) ? (
         <div className="mt-20 text-center">No data found</div>
       ) : (
