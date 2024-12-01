@@ -8,8 +8,9 @@ import DeleteCryptAlert from '@/components/Crypt/DeleteCryptAlert';
 import { CryptType, type CryptResponse } from '@/types/crypt-types';
 import AddCryptFormSheet from '@/components/Crypt/AddCryptFormSheet';
 import UpdateCryptFormSheet from '@/components/Crypt/UpdateCryptFormSheet';
-import getCryptListQuery from '@/queries/getCryptListQuery';
+import getCryptListByTypeQuery from '@/queries/getCryptListByTypeQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
+import { paths } from '@/navigation/Routes';
 
 export { default as loader } from './loaders/pageLoader';
 
@@ -24,8 +25,8 @@ export function Component() {
   const [deleteDetails, setDeleteDetails] = useState<CryptResponse | null>(null);
 
   const { data, isLoading } = useQuery({
-    ...getCryptListQuery(CryptType.BONE),
-    placeholderData: initialData,
+    ...getCryptListByTypeQuery(CryptType.BONE),
+    initialData,
   });
 
   const handleNavigate = (path: string) => () => navigate(`${path}/slots`);
@@ -60,7 +61,9 @@ export function Component() {
     showBack: true,
     extra: (
       <div className="flex justify-center gap-2">
-        <Button variant="outline">Open Map </Button>
+        <Button variant="outline" onClick={() => navigate(paths.authenticated.MAP)}>
+          Open Map
+        </Button>
         <Button onClick={handleOpenAddSheet}>Add Crypt Building</Button>
       </div>
     ),

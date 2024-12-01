@@ -27,6 +27,9 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
       crypt_type,
       lat: null,
       lon: null,
+      length: null,
+      angle: null,
+      width: null,
     },
   });
 
@@ -35,7 +38,7 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
     onSuccess: () => {
       closeSheet();
       form.reset();
-      queryClient.invalidateQueries({ queryKey: ['getCryptList', crypt_type] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptListByType', crypt_type] }).then(() => {
         toast({
           variant: 'success',
           title: 'Crypt added successfully',
@@ -52,14 +55,16 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
 
   const onSubmit: SubmitHandler<z.infer<typeof CryptFormSchema>> = (data) => addMutation.mutate(data);
 
+  console.log(form.watch());
+
   return (
     <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
-      <SheetContent>
+      <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Add Crypt Building</SheetTitle>
         </SheetHeader>
         <Form {...form}>
-          <form className="mt-4 space-y-5.5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="mt-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="name"
@@ -139,6 +144,66 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Latitude</FormLabel>
+                  <Input
+                    placeholder="---"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      field.onChange(isNaN(value) ? null : value);
+                    }}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="length"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Length of building (meters)</FormLabel>
+                  <Input
+                    placeholder="---"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      field.onChange(isNaN(value) ? null : value);
+                    }}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="width"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Width of building (meters)</FormLabel>
+                  <Input
+                    placeholder="---"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      field.onChange(isNaN(value) ? null : value);
+                    }}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="angle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Angle (default to 0°)</FormLabel>
                   <Input
                     placeholder="---"
                     type="number"

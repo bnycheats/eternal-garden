@@ -1,5 +1,5 @@
-import { type MenuModelType } from "@/components/Menu";
-import { paths } from "@/navigation/Routes";
+import { type MenuModelType } from '@/components/Menu';
+import { paths } from '@/navigation/Routes';
 import {
   AiOutlineAppstore,
   AiOutlineTable,
@@ -7,74 +7,74 @@ import {
   AiOutlineFile,
   AiOutlineTeam,
   AiOutlineCalendar,
-} from "react-icons/ai";
-import { CiMedicalCross } from "react-icons/ci";
+} from 'react-icons/ai';
+import { CiMedicalCross } from 'react-icons/ci';
 
 export function getMenus(): MenuModelType[] {
   return [
     {
-      label: "MENU",
+      label: 'MENU',
       items: [
         {
-          itemKey: "dashboard",
+          itemKey: 'dashboard',
           to: paths.authenticated.DASHBOARD,
-          label: "Dashboard",
+          label: 'Dashboard',
           icon: <AiOutlineAppstore />,
         },
         {
-          itemKey: "burial-space",
+          itemKey: 'burial-space',
           to: paths.authenticated.BURIAL_SPACE,
-          label: "Burial Space",
+          label: 'Burial Space',
           icon: <CiMedicalCross />,
         },
         {
-          itemKey: "reports",
+          itemKey: 'reports',
           to: paths.authenticated.REPORTS,
-          label: "Reports",
+          label: 'Reports',
           icon: <AiOutlineTable />,
           children: [
             {
               to: paths.authenticated.SALES,
-              label: "Sales",
+              label: 'Sales',
             },
             {
               to: paths.authenticated.CLIENTS,
-              label: "Clients",
+              label: 'Clients',
             },
             {
               to: paths.authenticated.DECEASED,
-              label: "Deceased",
+              label: 'Deceased',
             },
           ],
         },
         {
-          itemKey: "map-editor",
-          to: paths.authenticated.MAP_EDITOR,
-          label: "Map Editor",
+          itemKey: 'map',
+          to: paths.authenticated.MAP,
+          label: 'Map',
           icon: <AiOutlineEnvironment />,
         },
         {
-          itemKey: "activity-logs",
+          itemKey: 'activity-logs',
           to: paths.authenticated.ACTIVITY_LOGS,
-          label: "Activity Logs",
+          label: 'Activity Logs',
           icon: <AiOutlineFile />,
         },
         {
-          itemKey: "user-logs",
+          itemKey: 'user-logs',
           to: paths.authenticated.USER_LOGS,
-          label: "User Logs",
+          label: 'User Logs',
           icon: <AiOutlineTeam />,
         },
         {
-          itemKey: "pending-burial",
+          itemKey: 'pending-burial',
           to: paths.authenticated.PENDING_BURIAL,
-          label: "Pending for Burial",
+          label: 'Pending for Burial',
           icon: <AiOutlineCalendar />,
         },
         {
-          itemKey: "schedule",
+          itemKey: 'schedule',
           to: paths.authenticated.SCHEDULE,
-          label: "Schedule",
+          label: 'Schedule',
           icon: <AiOutlineCalendar />,
         },
       ],

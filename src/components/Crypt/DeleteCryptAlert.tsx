@@ -22,7 +22,7 @@ function DeleteCryptAlert(props: DeleteCryptAlertProps) {
     mutationFn: (id: string) => deleteCrypt(id),
     onSuccess: () => {
       closeModal();
-      queryClient.invalidateQueries({ queryKey: ['getCryptList', cryptType] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptListByType', cryptType] }).then(() => {
         toast({
           variant: 'success',
           title: `${title} deleted successfully`,

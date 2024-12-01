@@ -27,6 +27,7 @@ export const paths = {
     USER_LOGS: '/user-logs',
     PENDING_BURIAL: '/pending-burial',
     SCHEDULE: '/schedule',
+    MAP: '/map',
   },
   public: {
     LOGIN: '/login',
@@ -95,7 +96,7 @@ export const routes: Array<RouteObject> = [
             path: paths.authenticated.COFFIN_CRYPT_SLOTS,
             lazy: () => import('@/pages/coffin-crypt/Slots'),
             handle: {
-              title: 'Coffin Crypt Details',
+              title: 'Coffin Crypt Slots',
             },
             errorElement: <ErrorBoundary />,
           },
@@ -119,7 +120,7 @@ export const routes: Array<RouteObject> = [
             path: paths.authenticated.BONE_CRYPT_SLOTS,
             lazy: () => import('@/pages/bone-crypt/Slots'),
             handle: {
-              title: 'Bone Crypt Details',
+              title: 'Bone Crypt Slots',
             },
             errorElement: <ErrorBoundary />,
           },
@@ -144,6 +145,14 @@ export const routes: Array<RouteObject> = [
             lazy: () => import('@/pages/clients/Create'),
             handle: {
               title: 'Create Client',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.MAP,
+            lazy: () => import('@/pages/map/Page'),
+            handle: {
+              title: 'Map',
             },
             errorElement: <ErrorBoundary />,
           },

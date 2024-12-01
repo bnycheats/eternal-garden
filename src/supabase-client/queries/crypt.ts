@@ -2,7 +2,17 @@ import supabase from '@/supabase-client';
 
 import { CryptSlotResponse, CryptType, type CryptResponse } from '@/types/crypt-types';
 
-export async function getCryptList(type: CryptType) {
+export async function getCryptList() {
+  const { data, error } = await supabase.from('crypt_list').select('*');
+
+  if (error) {
+    throw error;
+  }
+
+  return data as Array<CryptResponse>;
+}
+
+export async function getCryptListByType(type: CryptType) {
   const { data, error } = await supabase.from('crypt_list').select('*').eq('crypt_type', type);
 
   if (error) {
