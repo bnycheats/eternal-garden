@@ -1,8 +1,8 @@
 import { useState, Fragment } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
-import NichesCard from '@/components/Crypt/NichesCard';
-import SelectCryptSlotFormSheet from '@/components/Crypt/SelectCryptSlotFormSheet';
+import NichesCard from '@/components/Burial/NichesCard';
+import SelectCryptSlotFormSheet from '@/components/Burial/SelectCryptSlotFormSheet';
 import { type CryptResponse, type CryptSlotResponse, CryptSlotStatus, CryptType, Face } from '@/types/crypt-types';
 import getCryptQuery from '@/queries/getCryptQuery';
 import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
@@ -65,11 +65,7 @@ export function Component() {
   usePrivateHeader({
     title: 'Bone Crypt Slots',
     showBack: true,
-    extra: (
-      <div className="flex justify-center gap-2">
-        <Legend />
-      </div>
-    ),
+    extra: <Legend />,
   });
 
   return (
@@ -87,6 +83,9 @@ export function Component() {
             lon: null,
             lat: null,
             status: CryptSlotStatus.OCCUPIED,
+            angle: null,
+            length: null,
+            width: null,
           }}
           open={openAddSheet}
           closeSheet={closeAddSheet}

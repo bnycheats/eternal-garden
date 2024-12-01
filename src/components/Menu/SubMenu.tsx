@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
-import { NavLink, useLocation } from "react-router-dom";
+import { cn } from '@/lib/utils';
+import { NavLink, useLocation } from 'react-router-dom';
 
-import { activeClass } from "./MenuItem";
+import { activeClass } from './MenuItem';
 
 function SubMenu(props: SubMenuProps) {
   const { pathname } = useLocation();
@@ -10,13 +10,13 @@ function SubMenu(props: SubMenuProps) {
       {props.items.map((item, index) => (
         <li key={index}>
           <NavLink
-            to={item.to ?? "#"}
+            to={item.to ?? '#'}
             className={() =>
               cn(
-                "group relative flex items-center justify-between rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:text-white dark:hover:bg-meta-4",
+                'group relative flex items-center justify-between rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:text-white dark:hover:bg-meta-4',
                 {
                   [activeClass]: pathname === item.to,
-                }
+                },
               )
             }
           >

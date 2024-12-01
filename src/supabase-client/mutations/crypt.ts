@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { CryptFormSchema, CryptSlotFormSchema, type CryptResponse } from '@/types/crypt-types';
 
 export async function addCrypt(formData: z.infer<typeof CryptFormSchema>) {
-  console.log(formData);
   let payload = {};
   const { lat, lon, ...other } = formData;
   if (lat && lon) {
@@ -13,7 +12,6 @@ export async function addCrypt(formData: z.infer<typeof CryptFormSchema>) {
     payload = { ...other, coordinates: null };
   }
 
-  console.log(payload);
   const { data, error } = await supabase.from('crypt_list').insert(payload).single();
 
   if (error) {

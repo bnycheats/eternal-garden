@@ -10,11 +10,15 @@ export const paths = {
     DASHBOARD: '/dashboard',
     BURIAL_SPACE: '/burial-space',
     COFFIN_CRYPT: '/coffin-crypt',
+    COFFIN_CRYPT_MAP: '/coffin-crypt/map',
     COFFIN_CRYPT_SLOTS: '/coffin-crypt/:id/slots',
     COFFIN_CRYPT_SLOT_DETAILS: '/coffin-crypt/:id/slots/:slotId',
     BONE_CRYPT: '/bone-crypt',
+    BONE_CRYPT_MAP: '/bone-crypt/map',
     BONE_CRYPT_SLOTS: '/bone-crypt/:id/slots',
     BONE_CRYPT_SLOT_DETAILS: '/bone-crypt/:id/slots/:slotId',
+    LAWN: '/lawn',
+    LAWN_SLOTS: '/lawn/:id/slots',
     CLIENTS: '/clients',
     CLIENTS_CREATE: '/clients/create',
     CLIENTS_EDIT: '/clients/edit/:clientId',
@@ -93,6 +97,14 @@ export const routes: Array<RouteObject> = [
             errorElement: <ErrorBoundary />,
           },
           {
+            path: paths.authenticated.COFFIN_CRYPT_MAP,
+            lazy: () => import('@/pages/coffin-crypt/Map'),
+            handle: {
+              title: 'Coffin Crypt Map',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
             path: paths.authenticated.COFFIN_CRYPT_SLOTS,
             lazy: () => import('@/pages/coffin-crypt/Slots'),
             handle: {
@@ -117,6 +129,14 @@ export const routes: Array<RouteObject> = [
             errorElement: <ErrorBoundary />,
           },
           {
+            path: paths.authenticated.BONE_CRYPT_MAP,
+            lazy: () => import('@/pages/bone-crypt/Map'),
+            handle: {
+              title: 'Bone Crypt Map',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
             path: paths.authenticated.BONE_CRYPT_SLOTS,
             lazy: () => import('@/pages/bone-crypt/Slots'),
             handle: {
@@ -129,6 +149,22 @@ export const routes: Array<RouteObject> = [
             lazy: () => import('@/pages/bone-crypt/SlotDetails'),
             handle: {
               title: 'Bone Crypt Slot Details',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.LAWN,
+            lazy: () => import('@/pages/lawn/Page'),
+            handle: {
+              title: 'Lawn lots',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.LAWN_SLOTS,
+            lazy: () => import('@/pages/lawn/Slots'),
+            handle: {
+              title: 'Lawn Slots',
             },
             errorElement: <ErrorBoundary />,
           },

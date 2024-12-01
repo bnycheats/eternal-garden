@@ -8,40 +8,43 @@ import Spinner from '@/components/Spinner';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { CryptFormSchema, CryptType } from '@/types/crypt-types';
+import { CryptSlotFormSchema, CryptSlotStatus, CryptType } from '@/types/crypt-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addCrypt } from '@/supabase-client/mutations/crypt';
-import FormLabelIndicator from '../FormLabelIndicator';
+import { addCryptSlot } from '@/supabase-client/mutations/crypt';
 
-function AddCryptFormSheet(props: AddCryptFormSheetProps) {
-  const { closeSheet, crypt_type, ...other } = props;
+function AddLawnFormSheet(props: AddLawnFormSheetProps) {
+  const { closeSheet, cryptId, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof CryptFormSchema>>({
-    resolver: zodResolver(CryptFormSchema),
+  const form = useForm<z.infer<typeof CryptSlotFormSchema>>({
+    resolver: zodResolver(CryptSlotFormSchema),
     defaultValues: {
-      name: '',
-      rows: null,
-      columns: null,
-      crypt_type,
+      crypt_id: cryptId,
+      crypt_type: CryptType.LAWN,
+      status: CryptSlotStatus.VACANT,
       lat: null,
       lon: null,
       length: null,
       angle: null,
       width: null,
+      column: null,
+      face: null,
+      occupied_by: null,
+      row: null,
+      slot: null,
     },
   });
 
   const addMutation = useMutation({
-    mutationFn: (request: z.infer<typeof CryptFormSchema>) => addCrypt(request),
+    mutationFn: (request: z.infer<typeof CryptSlotFormSchema>) => addCryptSlot(request),
     onSuccess: () => {
       closeSheet();
       form.reset();
-      queryClient.invalidateQueries({ queryKey: ['getCryptListByType', crypt_type] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptSlotByCryptId', cryptId] }).then(() => {
         toast({
           variant: 'success',
-          title: 'Crypt added successfully',
+          title: 'Lawn added successfully',
         });
       });
     },
@@ -53,57 +56,22 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof CryptFormSchema>> = (data) => addMutation.mutate(data);
-
-  console.log(form.watch());
+  const onSubmit: SubmitHandler<z.infer<typeof CryptSlotFormSchema>> = (data) => addMutation.mutate(data);
 
   return (
     <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Add Crypt Building</SheetTitle>
+          <SheetTitle>Add Lawn</SheetTitle>
         </SheetHeader>
         <Form {...form}>
           <form className="mt-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="name"
+              name="slot"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Name <FormLabelIndicator isOptional={CryptFormSchema.shape[field.name].isOptional()} />
-                  </FormLabel>
-                  <Input type="text" placeholder="---" {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="rows"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rows</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="columns"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Columns</FormLabel>
+                  <FormLabel>Slot Number</FormLabel>
                   <Input
                     placeholder="---"
                     type="number"
@@ -219,10 +187,7 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
               )}
             />
             <SheetFooter>
-              <Button
-                type="submit"
-                disabled={addMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
-              >
+              <Button type="submit" disabled={addMutation.isPending || !form.formState.isDirty}>
                 {addMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
                 Add
               </Button>
@@ -234,9 +199,9 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
   );
 }
 
-type AddCryptFormSheetProps = {
+type AddLawnFormSheetProps = {
   closeSheet: () => void;
-  crypt_type: CryptType;
+  cryptId: string;
 } & DialogProps;
 
-export default AddCryptFormSheet;
+export default AddLawnFormSheet;

@@ -1,6 +1,6 @@
 function Legend() {
   return (
-    <div className="mb-2 flex items-center gap-2">
+    <div className="flex items-center gap-2">
       <span>Legend:</span>
       <div className="flex">
         <div className="bg-meta-1 px-2 py-1 text-sm text-white">OCCUPIED</div>

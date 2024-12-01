@@ -3,50 +3,46 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { DialogProps } from '@radix-ui/react-dialog';
+import { Fragment } from 'react';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { CryptFormSchema, CryptResponse } from '@/types/crypt-types';
+import { CryptFormSchema, CryptType } from '@/types/crypt-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updateCrypt } from '@/supabase-client/mutations/crypt';
+import { addCrypt } from '@/supabase-client/mutations/crypt';
 import FormLabelIndicator from '../FormLabelIndicator';
 
-function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
-  const { details, closeSheet, ...other } = props;
-  const { id, coordinates, ...otherDetails } = details;
-
-  let lat = null;
-  let lon = null;
-
-  if (coordinates) {
-    const split = coordinates.split(',');
-    lat = parseFloat(split[0]);
-    lon = parseFloat(split[1]);
-  }
-
+function AddCryptFormSheet(props: AddCryptFormSheetProps) {
+  const { closeSheet, crypt_type, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof CryptFormSchema>>({
     resolver: zodResolver(CryptFormSchema),
     defaultValues: {
-      ...otherDetails,
-      lat,
-      lon,
+      name: '',
+      rows: null,
+      columns: null,
+      crypt_type,
+      lat: null,
+      lon: null,
+      length: null,
+      angle: null,
+      width: null,
     },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: (request: z.infer<typeof CryptFormSchema>) => updateCrypt(id, request),
+  const addMutation = useMutation({
+    mutationFn: (request: z.infer<typeof CryptFormSchema>) => addCrypt(request),
     onSuccess: () => {
       closeSheet();
       form.reset();
-      queryClient.invalidateQueries({ queryKey: ['getCryptListByType', details.crypt_type] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptListByType', crypt_type] }).then(() => {
         toast({
           variant: 'success',
-          title: 'Crypt updated successfully',
+          title: 'Crypt added successfully',
         });
       });
     },
@@ -58,13 +54,22 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof CryptFormSchema>> = (data) => updateMutation.mutate(data);
+  const getTitle = (type: CryptType) => {
+    switch (type) {
+      case CryptType.LAWN:
+        return 'Add lot';
+      default:
+        return 'Add Crypt Building';
+    }
+  };
+
+  const onSubmit: SubmitHandler<z.infer<typeof CryptFormSchema>> = (data) => addMutation.mutate(data);
 
   return (
     <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Edit Crypt Building</SheetTitle>
+          <SheetTitle>{getTitle(crypt_type)}</SheetTitle>
         </SheetHeader>
         <Form {...form}>
           <form className="mt-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -90,7 +95,6 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                   <Input
                     placeholder="---"
                     type="number"
-                    disabled
                     {...field}
                     value={field.value ?? ''}
                     onChange={(e) => {
@@ -98,7 +102,6 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                       field.onChange(isNaN(value) ? null : value);
                     }}
                   />
-                  <span className="text-xs text-meta-8">Existing values for rows cannot be changed.</span>
                   <FormMessage />
                 </FormItem>
               )}
@@ -112,7 +115,6 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                   <Input
                     placeholder="---"
                     type="number"
-                    disabled
                     {...field}
                     value={field.value ?? ''}
                     onChange={(e) => {
@@ -120,7 +122,6 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                       field.onChange(isNaN(value) ? null : value);
                     }}
                   />
-                  <span className="text-xs text-meta-8">Existing values for columns cannot be changed.</span>
                   <FormMessage />
                 </FormItem>
               )}
@@ -165,73 +166,77 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="length"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Length of building (meters)</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="width"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Width of building (meters)</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="angle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Angle (default to 0°)</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {(crypt_type === CryptType.COFFIN || crypt_type === CryptType.BONE) && (
+              <Fragment>
+                <FormField
+                  control={form.control}
+                  name="length"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Length of building (meters)</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="width"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Width of building (meters)</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="angle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Angle (default to 0°)</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </Fragment>
+            )}
             <SheetFooter>
               <Button
                 type="submit"
-                disabled={updateMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
+                disabled={addMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
               >
-                {updateMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
-                Save
+                {addMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
+                Add
               </Button>
             </SheetFooter>
           </form>
@@ -241,9 +246,9 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
   );
 }
 
-type UpdateCryptFormSheetProps = {
-  details: CryptResponse;
+type AddCryptFormSheetProps = {
   closeSheet: () => void;
+  crypt_type: CryptType;
 } & DialogProps;
 
-export default UpdateCryptFormSheet;
+export default AddCryptFormSheet;

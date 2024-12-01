@@ -9,7 +9,7 @@ function HeaderPrivate() {
   const { title, extra, showBack } = header;
 
   return (
-    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex items-center gap-4">
         {showBack && (
           <AiOutlineLeft

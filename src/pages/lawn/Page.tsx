@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { GiTombstone } from 'react-icons/gi';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import CryptCard from '@/components/Burial/CryptCard';
 import CryptkeletonCard from '@/components/Burial/CryptkeletonCard';
@@ -25,7 +26,7 @@ export function Component() {
   const [deleteDetails, setDeleteDetails] = useState<CryptResponse | null>(null);
 
   const { data, isLoading } = useQuery({
-    ...getCryptListByTypeQuery(CryptType.COFFIN),
+    ...getCryptListByTypeQuery(CryptType.LAWN),
     initialData,
   });
 
@@ -57,15 +58,15 @@ export function Component() {
   const closeDeleteModal = () => setOpenDeleteModal(false);
 
   usePrivateHeader({
-    title: 'Coffin Crypt List',
+    title: 'Lawn Lots',
     showBack: true,
     extra: (
       <div className="flex justify-center gap-2">
-        <Button size="sm" variant="outline" onClick={() => navigate(paths.authenticated.COFFIN_CRYPT_MAP)}>
+        <Button size="sm" variant="outline" onClick={() => navigate(paths.authenticated.MAP)}>
           Open Map
         </Button>
         <Button size="sm" onClick={handleOpenAddSheet}>
-          Add Crypt Building
+          Add Crypt
         </Button>
       </div>
     ),
@@ -73,7 +74,7 @@ export function Component() {
 
   return (
     <Fragment>
-      <AddCryptFormSheet crypt_type={CryptType.COFFIN} open={openAddSheet} closeSheet={closeAddSheet} />
+      <AddCryptFormSheet crypt_type={CryptType.LAWN} open={openAddSheet} closeSheet={closeAddSheet} />
       {updateDetails && (
         <UpdateCryptFormSheet details={updateDetails} open={openUpdateSheet} closeSheet={closeUpdateSheet} />
       )}
@@ -94,9 +95,10 @@ export function Component() {
             data?.map((item, index) => (
               <CryptCard
                 key={index}
-                bgColor="bg-meta-5"
+                icon={<GiTombstone className="text-8xl" />}
+                bgColor="bg-meta-6"
                 title={item.name}
-                desc="Coffin Crypt Bulding"
+                desc="Lawn Lot"
                 handleNavigate={handleNavigate(item.id)}
                 handleRemove={handleRemove(item)}
                 handleEdit={handleEdit(item)}

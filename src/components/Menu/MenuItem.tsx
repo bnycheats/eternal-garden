@@ -1,48 +1,46 @@
-import { Fragment, useRef } from "react";
-import { cn } from "@/lib/utils";
-import { NavLink, useLocation } from "react-router-dom";
-import { Transition } from "react-transition-group";
+import { Fragment, useRef } from 'react';
+import { cn } from '@/lib/utils';
+import { NavLink, useLocation } from 'react-router-dom';
+import { Transition } from 'react-transition-group';
 
-import MenuItemGroup from "./MenuItemGroup";
-import SubMenu, { type SubMenuType } from "./SubMenu";
+import MenuItemGroup from './MenuItemGroup';
+import SubMenu, { type SubMenuType } from './SubMenu';
 
 const transitionClasses = {
-  entering: "max-h-0 opacity-0",
-  entered: "max-h-230 opacity-100",
-  exiting: "max-h-0 opacity-0",
-  exited: "max-h-0 opacity-0",
-  unmounted: "",
+  entering: 'max-h-0 opacity-0',
+  entered: 'max-h-230 opacity-100',
+  exiting: 'max-h-0 opacity-0',
+  exited: 'max-h-0 opacity-0',
+  unmounted: '',
 };
 
-export const activeClass = "bg-graydark text-white dark:bg-meta-4";
+export const activeClass = 'bg-graydark text-white dark:bg-meta-4';
 
 function MenuItem(props: MenuItemProps) {
-  const { hidden, to, label, itemKey, icon, children } = props;
+  const { hidden, to, label, icon, children } = props;
 
   const { pathname } = useLocation();
   const nodeRef = useRef<HTMLDivElement>(null);
 
   if (hidden) return null;
 
-  if ("children" in props) {
+  if ('children' in props) {
     return (
       <MenuItemGroup
         active={
-          pathname === to ||
-          pathname.startsWith(to ?? "") ||
-          !!children?.map((item) => item.to).includes(pathname)
+          pathname === to || pathname.startsWith(to ?? '') || !!children?.map((item) => item.to).includes(pathname)
         }
       >
         {(toggle, open) => {
           return (
             <Fragment>
               <NavLink
-                to={to ?? "#"}
+                to={to ?? '#'}
                 className={cn(
-                  "group relative flex items-center justify-between rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4",
+                  'group relative flex items-center justify-between rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4',
                   {
                     [activeClass]: pathname === to,
-                  }
+                  },
                 )}
                 onClick={() => {
                   if (!open) toggle();
@@ -60,8 +58,8 @@ function MenuItem(props: MenuItemProps) {
                   className="absolute flex h-full w-9 items-center justify-center hover:bg-form-strokedark ltr:right-0 rtl:left-0"
                 >
                   <svg
-                    className={cn("fill-current transition-all duration-200", {
-                      "rotate-180": open,
+                    className={cn('fill-current transition-all duration-200', {
+                      'rotate-180': open,
                     })}
                     width="20"
                     height="20"
@@ -93,8 +91,8 @@ function MenuItem(props: MenuItemProps) {
                     <div
                       ref={nodeRef}
                       className={cn(
-                        "translate transform overflow-hidden transition-all duration-200",
-                        transitionClasses[state]
+                        'translate transform overflow-hidden transition-all duration-200',
+                        transitionClasses[state],
                       )}
                     >
                       <SubMenu items={children} />
@@ -111,12 +109,12 @@ function MenuItem(props: MenuItemProps) {
 
   return (
     <NavLink
-      to={to ?? "#"}
+      to={to ?? '#'}
       className={cn(
-        "group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4",
+        'group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4',
         {
-          [activeClass]: pathname?.includes(itemKey),
-        }
+          [activeClass]: pathname.startsWith(to ?? ''),
+        },
       )}
       onClick={(e) => {
         if (to === pathname) e.preventDefault();

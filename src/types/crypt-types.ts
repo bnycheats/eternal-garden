@@ -28,9 +28,9 @@ export type CryptResponse = {
   columns: number | null;
   coordinates: string | null;
   crypt_type: CryptType;
-  length: number;
-  width: number;
-  angle: number;
+  length: number | null;
+  width: number | null;
+  angle: number | null;
 };
 
 export type CryptSlotResponse = {
@@ -46,6 +46,9 @@ export type CryptSlotResponse = {
   face: Face | null;
   occupied_by: string | null;
   slot: number | null;
+  length: number | null;
+  width: number | null;
+  angle: number | null;
 };
 
 export const CryptFormSchema = z.object({
@@ -71,4 +74,7 @@ export const CryptSlotFormSchema = z.object({
   lat: z.number().nullable(),
   face: z.nativeEnum(Face).nullable(),
   crypt_type: z.string().min(1, { message: 'This field is required' }),
+  length: z.number().nullable(),
+  width: z.number().nullable(),
+  angle: z.number().nullable(),
 });

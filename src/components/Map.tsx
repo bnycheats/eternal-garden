@@ -1,39 +1,9 @@
-import { CryptSlotStatus, CryptType } from '@/types/crypt-types';
 import createBoundsFromCenter from '@/utils/createBoundsFromCenter';
 import { LatLngTuple, PathOptions } from 'leaflet';
 import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
 
 export function Map(props: MapProps) {
-  const { center, positions } = props;
-
-  const getOptions = (cryptType: CryptType): PathOptions => {
-    switch (cryptType) {
-      case CryptType.COFFIN:
-        return {
-          color: '#259ae6',
-          fillColor: '#259ae6',
-          fillOpacity: 1,
-        };
-      case CryptType.BONE:
-        return {
-          color: '#dc3545',
-          fillColor: '#dc3545',
-          fillOpacity: 1,
-        };
-      case CryptType.MAUSOLEUM:
-        return {
-          color: '#ffba00',
-          fillColor: '#ffba00',
-          fillOpacity: 1,
-        };
-      default:
-        return {
-          color: '#313d4a',
-          fillColor: '#313d4a',
-          fillOpacity: 1,
-        };
-    }
-  };
+  const { center = [7.31805, 125.662755], positions } = props;
 
   return (
     <MapContainer center={center} zoom={19} scrollWheelZoom={true} className="h-full w-full">
@@ -54,7 +24,7 @@ export function Map(props: MapProps) {
               item.width ?? 0,
               item.angle ?? 0,
             )}
-            pathOptions={getOptions(item.crypt_type)}
+            pathOptions={item.pathOptions}
           />
         );
       })}
@@ -63,18 +33,17 @@ export function Map(props: MapProps) {
 }
 
 type MapProps = {
-  center: LatLngTuple;
+  center?: LatLngTuple;
   positions: Array<Position>;
 };
 
 type Position = {
   id: string;
   coordinates: string | null;
-  crypt_type: CryptType;
+  pathOptions: PathOptions;
   length: number;
   width: number;
   angle: number;
-  status?: CryptSlotStatus;
 };
 
 export default Map;

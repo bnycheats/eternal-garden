@@ -1,13 +1,13 @@
 import { Fragment, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import CryptCard from '@/components/Crypt/CryptCard';
-import CryptkeletonCard from '@/components/Crypt/CryptkeletonCard';
+import CryptCard from '@/components/Burial/CryptCard';
+import CryptkeletonCard from '@/components/Burial/CryptkeletonCard';
 import { Button } from '@/components/ui/button';
-import DeleteCryptAlert from '@/components/Crypt/DeleteCryptAlert';
+import DeleteCryptAlert from '@/components/Burial/DeleteCryptAlert';
 import { CryptType, type CryptResponse } from '@/types/crypt-types';
-import AddCryptFormSheet from '@/components/Crypt/AddCryptFormSheet';
-import UpdateCryptFormSheet from '@/components/Crypt/UpdateCryptFormSheet';
+import AddCryptFormSheet from '@/components/Burial/AddCryptFormSheet';
+import UpdateCryptFormSheet from '@/components/Burial/UpdateCryptFormSheet';
 import getCryptListByTypeQuery from '@/queries/getCryptListByTypeQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
 import { paths } from '@/navigation/Routes';
@@ -61,10 +61,12 @@ export function Component() {
     showBack: true,
     extra: (
       <div className="flex justify-center gap-2">
-        <Button variant="outline" onClick={() => navigate(paths.authenticated.MAP)}>
+        <Button size="sm" variant="outline" onClick={() => navigate(paths.authenticated.BONE_CRYPT_MAP)}>
           Open Map
         </Button>
-        <Button onClick={handleOpenAddSheet}>Add Crypt Building</Button>
+        <Button size="sm" onClick={handleOpenAddSheet}>
+          Add Crypt Building
+        </Button>
       </div>
     ),
   });
