@@ -62,7 +62,7 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
   const getTitle = (type: CryptType) => {
     switch (type) {
       case CryptType.LAWN:
-        return 'Edit Lot';
+        return 'Edit Crypt';
       default:
         return 'Edit Crypt Building';
     }
@@ -91,92 +91,93 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="rows"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rows</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    disabled
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <span className="text-xs text-meta-8">Existing values for rows cannot be changed.</span>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="columns"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Columns</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    disabled
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <span className="text-xs text-meta-8">Existing values for columns cannot be changed.</span>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lon"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Longtitude</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lat"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Latitude</FormLabel>
-                  <Input
-                    placeholder="---"
-                    type="number"
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      field.onChange(isNaN(value) ? null : value);
-                    }}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             {(otherDetails.crypt_type === CryptType.COFFIN || otherDetails.crypt_type === CryptType.BONE) && (
               <Fragment>
+                <FormField
+                  control={form.control}
+                  name="rows"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Rows</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        disabled
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <span className="text-xs text-meta-8">Existing values for rows cannot be changed.</span>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="columns"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Columns</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        disabled
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <span className="text-xs text-meta-8">Existing values for columns cannot be changed.</span>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lon"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Longtitude</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lat"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Latitude</FormLabel>
+                      <Input
+                        placeholder="---"
+                        type="number"
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(isNaN(value) ? null : value);
+                        }}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="length"
