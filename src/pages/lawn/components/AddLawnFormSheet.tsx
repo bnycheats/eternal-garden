@@ -131,7 +131,7 @@ function AddLawnFormSheet(props: AddLawnFormSheetProps) {
               name="length"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Length of lawin (meters)</FormLabel>
+                  <FormLabel>Length of lawn (meters)</FormLabel>
                   <Input
                     placeholder="---"
                     type="number"
