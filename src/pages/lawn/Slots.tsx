@@ -1,5 +1,5 @@
 import CardContainer from '@/components/CardContainer';
-import { Fragment, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import Map from '@/components/Map';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
 import { useLoaderData, useParams } from 'react-router-dom';
@@ -11,6 +11,9 @@ import Legend from './components/Legends';
 import { Button } from '@/components/ui/button';
 import AddLawnFormSheet from './components/AddLawnFormSheet';
 import { PathOptions } from 'leaflet';
+import SelectLawnFormSheet from './components/SelectLawnFormSheet';
+import coordinatesToLatLon from '@/utils/coordinatesToLatLon';
+import ViewLawnInfoSheet from './components/ViewLawnInfoSheet';
 
 export { default as loader } from '@/loaders/slotsLoader';
 
@@ -23,6 +26,9 @@ export function Component() {
   };
 
   const [openAddSheet, setOpenAddSheet] = useState(false);
+  const [openViewSheet, setOpenViewSheet] = useState(false);
+  const [openSelectSheet, setOpenSelectSheet] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<CryptSlotResponse | null>(null);
 
   const { data: crypt } = useQuery({ ...getCryptQuery(id ?? ''), initialData: initialCrypt });
 
@@ -31,6 +37,16 @@ export function Component() {
   const handleOpenAddSheet = () => setOpenAddSheet(true);
 
   const closeAddSheet = () => setOpenAddSheet(false);
+
+  const closeSelectSheet = () => {
+    setOpenSelectSheet(false);
+    setTimeout(() => setSelectedSlot(null), 300);
+  };
+
+  const closeViewSheet = () => {
+    setOpenViewSheet(false);
+    setTimeout(() => setSelectedSlot(null), 300);
+  };
 
   const getOptions = (status: CryptSlotStatus): PathOptions => {
     switch (status) {
@@ -55,6 +71,27 @@ export function Component() {
     }
   };
 
+  const handleSelectSlot = (item: CryptSlotResponse) => () => {
+    if (item.status === CryptSlotStatus.VACANT) setOpenSelectSheet(true);
+    else setOpenViewSheet(true);
+    setSelectedSlot(item);
+  };
+
+  const positions = useMemo(() => {
+    return cryptSlot.map((item) => ({
+      angle: item?.angle ?? 0,
+      coordinates: item.coordinates,
+      crypt_type: item.crypt_type,
+      id: item.id,
+      length: item?.length ?? 0,
+      width: item?.width ?? 0,
+      pathOptions: getOptions(item.status),
+      eventHandlers: {
+        click: handleSelectSlot(item),
+      },
+    }));
+  }, [cryptSlot]);
+
   usePrivateHeader({
     title: crypt?.name ?? '',
     showBack: true,
@@ -70,20 +107,23 @@ export function Component() {
   return (
     <Fragment>
       <Legend />
+      {selectedSlot && (
+        <ViewLawnInfoSheet lawnDetails={selectedSlot} open={openViewSheet} closeSheet={closeViewSheet} />
+      )}
       <AddLawnFormSheet cryptId={id ?? ''} open={openAddSheet} closeSheet={closeAddSheet} />
-      <CardContainer className="h-[calc(100vh-230px)] w-full p-0">
-        <Map
-          center={[7.319603, 125.66301]}
-          positions={cryptSlot.map((item) => ({
-            angle: item?.angle ?? 0,
-            coordinates: item.coordinates,
-            crypt_type: item.crypt_type,
-            id: item.id,
-            length: item?.length ?? 0,
-            width: item?.width ?? 0,
-            pathOptions: getOptions(item.status),
-          }))}
+      {selectedSlot && (
+        <SelectLawnFormSheet
+          id={selectedSlot.id}
+          slotDetails={{
+            ...selectedSlot,
+            ...coordinatesToLatLon(selectedSlot?.coordinates ?? ''),
+          }}
+          open={openSelectSheet}
+          closeSheet={closeSelectSheet}
         />
+      )}
+      <CardContainer className="mb-0 h-[calc(100vh-230px)] w-full p-0">
+        <Map positions={positions} />
       </CardContainer>
     </Fragment>
   );

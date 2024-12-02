@@ -12,11 +12,9 @@ export const paths = {
     COFFIN_CRYPT: '/coffin-crypt',
     COFFIN_CRYPT_MAP: '/coffin-crypt/map',
     COFFIN_CRYPT_SLOTS: '/coffin-crypt/:id/slots',
-    COFFIN_CRYPT_SLOT_DETAILS: '/coffin-crypt/:id/slots/:slotId',
     BONE_CRYPT: '/bone-crypt',
     BONE_CRYPT_MAP: '/bone-crypt/map',
     BONE_CRYPT_SLOTS: '/bone-crypt/:id/slots',
-    BONE_CRYPT_SLOT_DETAILS: '/bone-crypt/:id/slots/:slotId',
     LAWN: '/lawn',
     LAWN_SLOTS: '/lawn/:id/slots',
     CLIENTS: '/clients',
@@ -113,14 +111,6 @@ export const routes: Array<RouteObject> = [
             errorElement: <ErrorBoundary />,
           },
           {
-            path: paths.authenticated.COFFIN_CRYPT_SLOT_DETAILS,
-            lazy: () => import('@/pages/coffin-crypt/SlotDetails'),
-            handle: {
-              title: 'Coffin Crypt Slot Details',
-            },
-            errorElement: <ErrorBoundary />,
-          },
-          {
             path: paths.authenticated.BONE_CRYPT,
             lazy: () => import('@/pages/bone-crypt/Page'),
             handle: {
@@ -141,14 +131,6 @@ export const routes: Array<RouteObject> = [
             lazy: () => import('@/pages/bone-crypt/Slots'),
             handle: {
               title: 'Bone Crypt Slots',
-            },
-            errorElement: <ErrorBoundary />,
-          },
-          {
-            path: paths.authenticated.BONE_CRYPT_SLOT_DETAILS,
-            lazy: () => import('@/pages/bone-crypt/SlotDetails'),
-            handle: {
-              title: 'Bone Crypt Slot Details',
             },
             errorElement: <ErrorBoundary />,
           },

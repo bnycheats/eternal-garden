@@ -30,7 +30,6 @@ export function Component() {
       </div>
       <CardContainer className="mb-0 h-[calc(100vh-230px)] w-full p-0">
         <Map
-          center={[7.31805, 125.662755]}
           positions={data.map((item) => ({
             angle: item?.angle ?? 0,
             coordinates: item.coordinates,

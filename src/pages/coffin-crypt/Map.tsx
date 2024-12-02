@@ -28,9 +28,8 @@ export function Component() {
         <div className="h-3 w-3 bg-meta-5" />
         <span className="text-xs">Coffin Crypt</span>
       </div>
-      <CardContainer className="h-[calc(100vh-230px)] w-full p-0">
+      <CardContainer className="mb-0 h-[calc(100vh-230px)] w-full p-0">
         <Map
-          center={[7.31805, 125.662755]}
           positions={data.map((item) => ({
             angle: item?.angle ?? 0,
             coordinates: item.coordinates,

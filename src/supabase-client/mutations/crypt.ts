@@ -62,3 +62,20 @@ export async function addCryptSlot(formData: z.infer<typeof CryptSlotFormSchema>
 
   return data as CryptResponse;
 }
+
+export async function updateCryptSlot(id: string, formData: z.infer<typeof CryptSlotFormSchema>) {
+  let payload = {};
+  const { lat, lon, ...other } = formData;
+  if (lat && lon) {
+    payload = { ...other, coordinates: `${lat}, ${lon}` };
+  } else {
+    payload = { ...other, coordinates: null };
+  }
+  const { data, error } = await supabase.from('crypt_slot').update(payload).eq('id', id).single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data as CryptResponse;
+}

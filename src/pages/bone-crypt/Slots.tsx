@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import NichesCard from '@/components/Burial/NichesCard';
 import SelectCryptSlotFormSheet from '@/components/Burial/SelectCryptSlotFormSheet';
 import { type CryptResponse, type CryptSlotResponse, CryptSlotStatus, CryptType, Face } from '@/types/crypt-types';
@@ -8,12 +8,10 @@ import getCryptQuery from '@/queries/getCryptQuery';
 import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
 import Legend from './components/Legend';
-
 export { default as loader } from '@/loaders/slotsLoader';
 
 export function Component() {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const { initialCrypt, initialCryptSlot } = useLoaderData() as {
     initialCrypt: CryptResponse;
@@ -35,7 +33,7 @@ export function Component() {
   const handleSelectSlot = (slot: number, face: Face) => {
     const findOwner = cryptSlot?.find((item) => item.slot === slot);
     if (findOwner) {
-      navigate(findOwner.id);
+      // navigate(`${paths.authenticated.SLOT}/${findOwner.id}`);
     } else {
       setOpenAddSheet(true);
       setSelectedSlot({ slot, face });
@@ -76,8 +74,6 @@ export function Component() {
             crypt_id: id ?? '',
             occupied_by: null,
             crypt_type: CryptType.BONE,
-            slot: selectedSlot?.slot ?? null,
-            face: selectedSlot?.face ?? null,
             row: Math.ceil((selectedSlot?.slot ?? 0) / (crypt?.columns ?? 0)),
             column: (selectedSlot?.slot ?? 0) % (crypt?.columns ?? 0),
             lon: null,
@@ -86,6 +82,7 @@ export function Component() {
             angle: null,
             length: null,
             width: null,
+            ...selectedSlot,
           }}
           open={openAddSheet}
           closeSheet={closeAddSheet}
