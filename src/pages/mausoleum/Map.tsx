@@ -7,7 +7,7 @@ import { CryptResponse, CryptType } from '@/types/crypt-types';
 import getCryptListByTypeQuery from '@/queries/getCryptListByTypeQuery';
 import { useQuery } from '@tanstack/react-query';
 
-export { default as loader } from './loaders/pageLoader';
+export { default as loader } from './loaders/listLoader';
 
 export function Component() {
   const initialData = useLoaderData() as Array<CryptResponse>;

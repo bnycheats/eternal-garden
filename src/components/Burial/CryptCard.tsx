@@ -8,7 +8,7 @@ function CryptCard(props: CryptCardProps) {
   const {
     icon = <FaRegBuilding className="text-8xl" />,
     bgColor,
-    handleAddUser,
+    handleSelectClient,
     handleNavigate,
     handleRemove,
     handleEdit,
@@ -18,8 +18,8 @@ function CryptCard(props: CryptCardProps) {
   return (
     <Card className="relative rounded-none hover:shadow-lg">
       <div className="absolute right-2 top-2 flex gap-2">
-        {handleAddUser && (
-          <button onClick={handleAddUser}>
+        {handleSelectClient && (
+          <button onClick={handleSelectClient}>
             <AiOutlineUserAdd />
           </button>
         )}
@@ -58,7 +58,7 @@ function CryptCard(props: CryptCardProps) {
 type CryptCardProps = {
   icon?: ReactNode;
   bgColor: string;
-  handleAddUser?: () => void;
+  handleSelectClient?: () => void;
   handleNavigate?: () => void;
   handleRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleEdit?: (e: React.MouseEvent<HTMLButtonElement>) => void;

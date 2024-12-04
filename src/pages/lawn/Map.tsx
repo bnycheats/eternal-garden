@@ -3,17 +3,17 @@ import { Fragment } from 'react';
 import Map from '@/components/Map';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
 import { useLoaderData } from 'react-router-dom';
-import { CryptResponse, CryptType } from '@/types/crypt-types';
-import getCryptListByTypeQuery from '@/queries/getCryptListByTypeQuery';
+import { CryptSlotResponse, CryptType } from '@/types/crypt-types';
 import { useQuery } from '@tanstack/react-query';
+import getCryptSlotByTypeQuery from '@/queries/getCryptSlotByTypeQuery';
 
-export { default as loader } from './loaders/pageLoader';
+export { default as loader } from './loaders/mapLoader';
 
 export function Component() {
-  const initialData = useLoaderData() as Array<CryptResponse>;
+  const initialData = useLoaderData() as Array<CryptSlotResponse>;
 
   const { data } = useQuery({
-    ...getCryptListByTypeQuery(CryptType.LAWN),
+    ...getCryptSlotByTypeQuery(CryptType.LAWN),
     initialData,
   });
 

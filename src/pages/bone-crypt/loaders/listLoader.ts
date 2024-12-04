@@ -2,6 +2,6 @@ import { queryClientGetData } from '@/utils/query-client';
 import getCryptListByTypeQuery from '@/queries/getCryptListByTypeQuery';
 import { CryptType } from '@/types/crypt-types';
 
-const pageLoader = async () => await queryClientGetData(getCryptListByTypeQuery(CryptType.BONE));
+const listLoader = async () => await queryClientGetData(getCryptListByTypeQuery(CryptType.BONE));
 
-export default pageLoader;
+export default listLoader;

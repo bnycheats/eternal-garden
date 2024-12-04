@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { DialogProps } from '@radix-ui/react-dialog';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation, QueryKey } from '@tanstack/react-query';
 import Spinner from '@/components/Spinner';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 import { paths } from '@/navigation/Routes';
 
 function SelectCryptSlotFormSheet(props: SelectCryptSlotFormSheetProps) {
-  const { closeSheet, slotDetails, ...other } = props;
+  const { header, invalidateQueries, closeSheet, slotDetails, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -39,6 +39,7 @@ function SelectCryptSlotFormSheet(props: SelectCryptSlotFormSheetProps) {
           title: 'Slot occupied successfully',
         });
       });
+      if (invalidateQueries) queryClient.invalidateQueries({ queryKey: invalidateQueries });
     },
     onError: (error) => {
       toast({
@@ -70,9 +71,7 @@ function SelectCryptSlotFormSheet(props: SelectCryptSlotFormSheetProps) {
     <Sheet {...other} onOpenChange={(open) => !open && formReset()}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>
-            Slot {slotDetails.slot} - {slotDetails.face}
-          </SheetTitle>
+          <SheetTitle>{header || `Slot ${slotDetails.slot} - ${slotDetails.face}`}</SheetTitle>
         </SheetHeader>
         <Form {...form}>
           <form className="mt-4 space-y-5.5" onSubmit={form.handleSubmit(onSubmit)}>
@@ -116,6 +115,8 @@ function SelectCryptSlotFormSheet(props: SelectCryptSlotFormSheetProps) {
 }
 
 type SelectCryptSlotFormSheetProps = {
+  header?: string;
+  invalidateQueries?: Array<QueryKey>;
   closeSheet: () => void;
   slotDetails: z.infer<typeof CryptSlotFormSchema>;
 } & DialogProps;
