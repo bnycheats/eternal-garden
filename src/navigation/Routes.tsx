@@ -16,7 +16,10 @@ export const paths = {
     BONE_CRYPT_MAP: '/bone-crypt/map',
     BONE_CRYPT_SLOTS: '/bone-crypt/:id/slots',
     LAWN: '/lawn',
+    LAWN_MAP: '/lawn/map',
     LAWN_SLOTS: '/lawn/:id/slots',
+    MAUSOLEUM: '/mausoleum',
+    MAUSOLEUM_MAP: '/mausoleum/map',
     CLIENTS: '/clients',
     CLIENTS_CREATE: '/clients/create',
     CLIENTS_EDIT: '/clients/edit/:clientId',
@@ -72,7 +75,7 @@ export const routes: Array<RouteObject> = [
         children: [
           {
             path: paths.authenticated.DASHBOARD,
-            lazy: () => import('@/pages/dashboard/Page'),
+            lazy: () => import('@/pages/dashboard/List'),
             handle: {
               title: 'Dashboard',
             },
@@ -80,7 +83,7 @@ export const routes: Array<RouteObject> = [
           },
           {
             path: paths.authenticated.BURIAL_SPACE,
-            lazy: () => import('@/pages/burial-space/Page'),
+            lazy: () => import('@/pages/burial-space/List'),
             handle: {
               title: 'Burial Space',
             },
@@ -88,7 +91,7 @@ export const routes: Array<RouteObject> = [
           },
           {
             path: paths.authenticated.COFFIN_CRYPT,
-            lazy: () => import('@/pages/coffin-crypt/Page'),
+            lazy: () => import('@/pages/coffin-crypt/List'),
             handle: {
               title: 'Coffin Crypt List',
             },
@@ -112,7 +115,7 @@ export const routes: Array<RouteObject> = [
           },
           {
             path: paths.authenticated.BONE_CRYPT,
-            lazy: () => import('@/pages/bone-crypt/Page'),
+            lazy: () => import('@/pages/bone-crypt/List'),
             handle: {
               title: 'Bone Crypt List',
             },
@@ -136,9 +139,17 @@ export const routes: Array<RouteObject> = [
           },
           {
             path: paths.authenticated.LAWN,
-            lazy: () => import('@/pages/lawn/Page'),
+            lazy: () => import('@/pages/lawn/List'),
             handle: {
               title: 'Lawn lots',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.LAWN_MAP,
+            lazy: () => import('@/pages/lawn/Map'),
+            handle: {
+              title: 'Lawn Map',
             },
             errorElement: <ErrorBoundary />,
           },
@@ -151,8 +162,24 @@ export const routes: Array<RouteObject> = [
             errorElement: <ErrorBoundary />,
           },
           {
+            path: paths.authenticated.MAUSOLEUM,
+            lazy: () => import('@/pages/mausoleum/List'),
+            handle: {
+              title: 'Mausoleum List',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.MAUSOLEUM_MAP,
+            lazy: () => import('@/pages/mausoleum/Map'),
+            handle: {
+              title: 'Mausoleum Map',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
             path: paths.authenticated.CLIENTS,
-            lazy: () => import('@/pages/clients/Page'),
+            lazy: () => import('@/pages/clients/List'),
             handle: {
               title: 'Clients',
             },

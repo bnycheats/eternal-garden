@@ -62,7 +62,7 @@ export function Component() {
     showBack: true,
     extra: (
       <div className="flex justify-center gap-2">
-        <Button size="sm" variant="outline" onClick={() => navigate(paths.authenticated.MAP)}>
+        <Button size="sm" variant="outline" onClick={() => navigate(paths.authenticated.LAWN_MAP)}>
           Open Map
         </Button>
         <Button size="sm" onClick={handleOpenAddSheet}>

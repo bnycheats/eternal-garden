@@ -16,8 +16,8 @@ function Clipboard(props: ClipboardProps) {
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger
+              tabIndex={-1}
               className="flex items-center outline-none"
-              autoFocus={false}
               onClick={() => {
                 const el = document.createElement('textarea');
                 el.value = value?.toString() || '';

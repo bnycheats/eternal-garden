@@ -8,6 +8,7 @@ import { type CryptResponse, type CryptSlotResponse, CryptSlotStatus, CryptType,
 import getCryptQuery from '@/queries/getCryptQuery';
 import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
+import ViewCryptInfoSheet from '@/components/Burial/ViewCryptInfoSheet';
 
 export { default as loader } from '@/loaders/slotsLoader';
 
@@ -21,6 +22,7 @@ export function Component() {
 
   const [openAddSheet, setOpenAddSheet] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<SelectedSlot | null>(null);
+  const [viewSlot, setViewSlot] = useState<CryptSlotResponse | null>(null);
 
   const { data: crypt } = useQuery({ ...getCryptQuery(id ?? ''), initialData: initialCrypt });
 
@@ -34,7 +36,7 @@ export function Component() {
   const handleSelectSlot = (slot: number, face: Face) => {
     const findOwner = cryptSlot?.find((item) => item.slot === slot);
     if (findOwner) {
-      // navigate(`${paths.authenticated.SLOT}/${findOwner.id}`);
+      setViewSlot(findOwner);
     } else {
       setOpenAddSheet(true);
       setSelectedSlot({ slot, face });
@@ -69,6 +71,7 @@ export function Component() {
 
   return (
     <Fragment>
+      <ViewCryptInfoSheet info={viewSlot} open={!!viewSlot} closeSheet={() => setViewSlot(null)} />
       {selectedSlot && (
         <SelectCryptSlotFormSheet
           slotDetails={{

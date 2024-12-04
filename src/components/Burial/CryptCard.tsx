@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card';
 import { FaRegBuilding } from 'react-icons/fa';
-import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai';
+import { AiFillEdit, AiFillEye, AiFillDelete, AiOutlineUserAdd } from 'react-icons/ai';
 import InfoBox from './InfoBox';
 import { ReactNode } from 'react';
 
@@ -8,6 +8,7 @@ function CryptCard(props: CryptCardProps) {
   const {
     icon = <FaRegBuilding className="text-8xl" />,
     bgColor,
+    handleAddUser,
     handleNavigate,
     handleRemove,
     handleEdit,
@@ -17,15 +18,26 @@ function CryptCard(props: CryptCardProps) {
   return (
     <Card className="relative rounded-none hover:shadow-lg">
       <div className="absolute right-2 top-2 flex gap-2">
-        <button onClick={handleNavigate}>
-          <AiFillEye />
-        </button>
-        <button onClick={handleEdit}>
-          <AiFillEdit />
-        </button>
-        <button onClick={handleRemove}>
-          <AiFillDelete />
-        </button>
+        {handleAddUser && (
+          <button onClick={handleAddUser}>
+            <AiOutlineUserAdd />
+          </button>
+        )}
+        {handleNavigate && (
+          <button onClick={handleNavigate}>
+            <AiFillEye />
+          </button>
+        )}
+        {handleEdit && (
+          <button onClick={handleEdit}>
+            <AiFillEdit />
+          </button>
+        )}
+        {handleRemove && (
+          <button onClick={handleRemove}>
+            <AiFillDelete />
+          </button>
+        )}
       </div>
       <div className={`h-30 p-4 ${bgColor}`}>
         <h1 className="text-xl text-white">{title}</h1>
@@ -46,9 +58,10 @@ function CryptCard(props: CryptCardProps) {
 type CryptCardProps = {
   icon?: ReactNode;
   bgColor: string;
-  handleNavigate: () => void;
-  handleRemove: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleEdit: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleAddUser?: () => void;
+  handleNavigate?: () => void;
+  handleRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleEdit?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   title: string;
   desc: string;
 };

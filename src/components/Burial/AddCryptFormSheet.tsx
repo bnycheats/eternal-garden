@@ -58,6 +58,8 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
     switch (type) {
       case CryptType.LAWN:
         return 'Add Crypt';
+      case CryptType.MAUSOLEUM:
+        return 'Add Mausoleum';
       default:
         return 'Add Crypt Building';
     }
@@ -86,7 +88,7 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
                 </FormItem>
               )}
             />
-            {(crypt_type === CryptType.COFFIN || crypt_type === CryptType.BONE) && (
+            {[CryptType.COFFIN, CryptType.BONE].includes(crypt_type) && (
               <Fragment>
                 <FormField
                   control={form.control}
@@ -128,6 +130,10 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
                     </FormItem>
                   )}
                 />
+              </Fragment>
+            )}
+            {[CryptType.COFFIN, CryptType.BONE, CryptType.MAUSOLEUM].includes(crypt_type) && (
+              <Fragment>
                 <FormField
                   control={form.control}
                   name="lon"

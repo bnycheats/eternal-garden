@@ -1,28 +1,16 @@
 function Legend() {
   const status = [
     {
-      title: 'Vacant',
-      color: 'bg-meta-3',
-    },
-    {
-      title: 'Occupied',
-      color: 'bg-meta-8',
-    },
-    {
       title: 'Coffin Crypt',
       color: 'bg-meta-5',
     },
     {
       title: 'Mausoleum',
-      color: 'bg-meta-6',
+      color: 'bg-meta-3',
     },
     {
       title: 'Bone Crypt',
       color: 'bg-meta-1',
-    },
-    {
-      title: 'No Slot',
-      color: 'bg-meta-4',
     },
   ];
 

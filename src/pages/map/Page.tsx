@@ -36,8 +36,8 @@ export function Component() {
         };
       case CryptType.MAUSOLEUM:
         return {
-          color: '#ffba00',
-          fillColor: '#ffba00',
+          color: '#10b981',
+          fillColor: '#10b981',
           fillOpacity: 1,
         };
       default:
