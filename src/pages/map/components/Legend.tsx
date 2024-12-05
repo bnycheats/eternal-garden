@@ -16,6 +16,14 @@ function Legend() {
       title: 'Lawn',
       color: 'bg-meta-8',
     },
+    {
+      title: 'Common Area',
+      color: 'bg-meta-4',
+    },
+    {
+      title: 'Annex',
+      color: 'bg-[blueviolet]',
+    },
   ];
 
   return (

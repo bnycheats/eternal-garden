@@ -55,6 +55,12 @@ export function Component() {
           fillColor: '#ffba00',
           fillOpacity: 1,
         };
+      case CryptType.ANNEX:
+        return {
+          color: '#8a2be2',
+          fillColor: '#8a2be2',
+          fillOpacity: 1,
+        };
       default:
         return {
           color: '#313d4a',

@@ -139,7 +139,9 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                 />
               </Fragment>
             )}
-            {[CryptType.COFFIN, CryptType.BONE, CryptType.MAUSOLEUM].includes(otherDetails.crypt_type) && (
+            {[CryptType.COFFIN, CryptType.BONE, CryptType.MAUSOLEUM, CryptType.COMMON, CryptType.ANNEX].includes(
+              otherDetails.crypt_type,
+            ) && (
               <Fragment>
                 <FormField
                   control={form.control}
@@ -181,7 +183,6 @@ function UpdateCryptFormSheet(props: UpdateCryptFormSheetProps) {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="length"

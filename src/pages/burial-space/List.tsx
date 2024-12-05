@@ -38,7 +38,7 @@ const spaces = [
   {
     title: 'ANNEX',
     icon: <FaCross />,
-    color: 'bg-meta-2',
+    color: 'bg-[blueviolet]',
     path: '/annex',
   },
 ];
@@ -54,7 +54,7 @@ export function Component() {
 
   return (
     <IconContext.Provider value={{ className: 'text-white text-7xl' }}>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="bg-m grid grid-cols-1 gap-5 sm:grid-cols-2">
         {spaces.map((item, index) => (
           <Card
             key={index}

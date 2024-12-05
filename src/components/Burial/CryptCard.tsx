@@ -17,7 +17,7 @@ function CryptCard(props: CryptCardProps) {
   } = props;
   return (
     <Card className="relative rounded-none hover:shadow-lg">
-      <div className="absolute right-2 top-2 flex gap-2">
+      <div className="absolute right-2 top-2 flex gap-2 text-white">
         {handleSelectClient && (
           <button onClick={handleSelectClient}>
             <AiOutlineUserAdd />
@@ -39,12 +39,12 @@ function CryptCard(props: CryptCardProps) {
           </button>
         )}
       </div>
-      <div className={`h-30 p-4 ${bgColor}`}>
+      <div className={`h-30 p-2 ${bgColor}`}>
         <h1 className="text-xl text-white">{title}</h1>
         <p className="text-white">{desc}</p>
       </div>
       <div className="relative">
-        <div className="absolute right-1/2 top-0 -translate-y-1/2 translate-x-1/2 py-2">{icon}</div>
+        <div className="absolute right-1/2 top-0 -translate-y-1/2 translate-x-1/2 bg-white py-2">{icon}</div>
         <div className="grid grid-cols-3 pt-10">
           <InfoBox count={200} title="SLOTS" />
           <InfoBox count={200} title="VACANT" />
