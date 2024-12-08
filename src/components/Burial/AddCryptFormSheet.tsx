@@ -78,170 +78,172 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
           <SheetTitle>{getTitle(crypt_type)}</SheetTitle>
         </SheetHeader>
         <Form {...form}>
-          <form className="mt-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Name <FormLabelIndicator isOptional={CryptFormSchema.shape[field.name].isOptional()} />
-                  </FormLabel>
-                  <Input type="text" placeholder="---" {...field} />
-                  <FormMessage />
-                </FormItem>
+          <form className="mt-4 space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel>
+                      Name <FormLabelIndicator isOptional={CryptFormSchema.shape[field.name].isOptional()} />
+                    </FormLabel>
+                    <Input type="text" placeholder="---" {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {[CryptType.COFFIN, CryptType.BONE].includes(crypt_type) && (
+                <Fragment>
+                  <FormField
+                    control={form.control}
+                    name="rows"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Rows</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="columns"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Columns</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </Fragment>
               )}
-            />
-            {[CryptType.COFFIN, CryptType.BONE].includes(crypt_type) && (
-              <Fragment>
-                <FormField
-                  control={form.control}
-                  name="rows"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Rows</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="columns"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Columns</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </Fragment>
-            )}
-            {[CryptType.COFFIN, CryptType.BONE, CryptType.MAUSOLEUM, CryptType.COMMON, CryptType.ANNEX].includes(
-              crypt_type,
-            ) && (
-              <Fragment>
-                <FormField
-                  control={form.control}
-                  name="lon"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Longtitude</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="lat"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Latitude</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="length"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Length of building (meters)</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="width"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Width of building (meters)</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="angle"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Angle (default to 0°)</FormLabel>
-                      <Input
-                        placeholder="---"
-                        type="number"
-                        {...field}
-                        value={field.value ?? ''}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value);
-                          field.onChange(isNaN(value) ? null : value);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </Fragment>
-            )}
+              {[CryptType.COFFIN, CryptType.BONE, CryptType.MAUSOLEUM, CryptType.COMMON, CryptType.ANNEX].includes(
+                crypt_type,
+              ) && (
+                <Fragment>
+                  <FormField
+                    control={form.control}
+                    name="lon"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Longtitude</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="lat"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Latitude</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="length"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Length of building (meters)</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="width"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Width of building (meters)</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="angle"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Angle (default to 0°)</FormLabel>
+                        <Input
+                          placeholder="---"
+                          type="number"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            field.onChange(isNaN(value) ? null : value);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </Fragment>
+              )}
+            </div>
             <SheetFooter>
               <Button
                 type="submit"

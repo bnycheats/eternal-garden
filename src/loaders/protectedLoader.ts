@@ -6,6 +6,7 @@ export async function protectedLoader({ request }: LoaderFunctionArgs) {
   const { data, error } = await supabase.auth.getSession();
   const pathname = new URL(request.url).pathname;
 
+
   if (error || !data.session) {
     if (
       Object.values(paths.public).includes(pathname) ||

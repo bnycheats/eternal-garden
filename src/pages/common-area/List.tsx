@@ -28,7 +28,7 @@ export function Component() {
     initialData,
   });
 
-  const handleNavigate = (path: string) => () => navigate(`${path}/slots`);
+  const handleNavigate = (path: string) => () => navigate(`${path}/list`);
 
   const handleRemove = (details: CryptResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { Gender } from '.';
+import sizeInMB, { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '@/utils/sizeInMB';
 
 // export enum LeaseStatus {
 //   'AT_NEED' = 'AT NEED',
@@ -17,11 +19,6 @@ export enum OccupantType {
 //   'PARTIALLY_PAID' = 'PARTIALLY PAID',
 //   'REFUNDED' = 'REFUNDED',
 // }
-
-export enum Gender {
-  'Female' = 'Female',
-  'Male' = 'Male',
-}
 
 export enum IdPresented {
   GSIS_ID = 'GSIS ID',
@@ -42,14 +39,6 @@ export enum ResidencyStatus {
   'OUTSIDE' = 'OUTSIDE',
 }
 
-const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
-const MAX_IMAGE_SIZE = 1; //In MegaBytes
-
-const sizeInMB = (sizeInBytes: number, decimalsNum = 2) => {
-  const result = sizeInBytes / (1024 * 1024);
-  return +result.toFixed(decimalsNum);
-};
-
 export const RegisterClientFormSchema = z.object({
   firstname: z.string().min(1, { message: 'This field is required' }),
   middlename: z.string().nullable(),
@@ -57,7 +46,9 @@ export const RegisterClientFormSchema = z.object({
   contact: z.string().min(1, { message: 'This field is required' }),
   suffix: z.string().nullable(),
   email: z.string().min(1, { message: 'This field is required' }).email('This is not a valid email.'),
-  gender: z.string().min(1, { message: 'This field is required' }),
+  gender: z.nativeEnum(Gender).refine((gender) => {
+    return gender.length > 0;
+  }, 'This field is required'),
   province: z.string().min(1, { message: 'This field is required' }),
   city_municipality: z.string().min(1, { message: 'This field is required' }),
   barangay: z.string().min(1, { message: 'This field is required' }),
@@ -111,8 +102,7 @@ export type RegisterClientRequest = Omit<
   picture?: string;
 };
 
-
 export type ClientResponse = RegisterClientRequest & {
   id: string;
   created_at: string;
-}
+};

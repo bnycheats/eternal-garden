@@ -6,6 +6,8 @@ import Navigation from './navigation';
 import { Toaster } from './components/ui/toaster';
 import { AuthProvider } from './providers/authProvider';
 
+import 'react-day-picker/dist/style.css';
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

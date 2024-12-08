@@ -22,6 +22,7 @@ export const paths = {
     MAUSOLEUM_MAP: '/mausoleum/map',
     COMMON_AREA: '/common-area',
     COMMON_AREA_MAP: '/common-area/map',
+    COMMON_AREA_DECEASED_LIST: '/common-area/:id/list',
     ANNEX: '/annex',
     ANNEX_MAP: '/annex/map',
     CLIENTS: '/clients',
@@ -194,6 +195,14 @@ export const routes: Array<RouteObject> = [
             lazy: () => import('@/pages/common-area/Map'),
             handle: {
               title: 'Common Area Map',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.COMMON_AREA_DECEASED_LIST,
+            lazy: () => import('@/pages/common-area/DeceasedList'),
+            handle: {
+              title: 'Common Area Deceased List',
             },
             errorElement: <ErrorBoundary />,
           },

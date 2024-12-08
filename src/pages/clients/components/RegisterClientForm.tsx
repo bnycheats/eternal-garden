@@ -8,7 +8,8 @@ import phil from 'phil-reg-prov-mun-brgy';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Gender, IdPresented, OccupantType, RegisterClientFormSchema, ResidencyStatus } from '@/types/clients-types';
+import { IdPresented, OccupantType, RegisterClientFormSchema, ResidencyStatus } from '@/types/clients-types';
+import { Gender } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerClient } from '@/supabase-client/mutations/clients';
 import FormLabelIndicator from '@/components/FormLabelIndicator';
@@ -28,7 +29,7 @@ function RegisterClientForm() {
       contact: '',
       suffix: null,
       email: '',
-      gender: '',
+      gender: undefined,
       province: '',
       city_municipality: '',
       barangay: '',

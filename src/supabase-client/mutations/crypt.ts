@@ -54,7 +54,7 @@ export async function addCryptSlot(formData: z.infer<typeof CryptSlotFormSchema>
   } else {
     payload = { ...other, coordinates: null };
   }
-  const { data, error } = await supabase.from('crypt_slot').insert(payload).single();
+  const { data, error } = await supabase.from('crypt_slot').insert(payload).select().single();
 
   if (error) {
     throw error;
