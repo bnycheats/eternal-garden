@@ -11,7 +11,7 @@ import DataTable from '@/components/DataTable';
 import { DEFAULT_PAGE, DEFAULT_SIZE } from '@/constants';
 import useCustomSearchParams from '@/hooks/useCustomSearchParams';
 import calculateAgeDied from '@/utils/calculateAgeDied';
-import ActionMenu from '../../components/Burial/ActionMenu';
+import ActionMenu from '@/components/Burial/ActionMenu';
 import { format } from 'date-fns';
 import { CryptType } from '@/types/crypt-types';
 
@@ -44,7 +44,7 @@ export function Component() {
   );
 
   usePrivateHeader({
-    title: 'Common Area Deceased List',
+    title: 'Annex Deceased List',
     showBack: true,
     extra: (
       <div className="flex justify-center">
@@ -59,7 +59,7 @@ export function Component() {
     <CardContainer>
       <AddNewDeceasedFormSheet
         cryptId={id ?? ''}
-        cryptType={CryptType.COMMON}
+        cryptType={CryptType.ANNEX}
         open={openAddSheet}
         closeSheet={closeAddSheet}
       />

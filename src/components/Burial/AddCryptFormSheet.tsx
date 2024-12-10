@@ -72,7 +72,15 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
   const onSubmit: SubmitHandler<z.infer<typeof CryptFormSchema>> = (data) => addMutation.mutate(data);
 
   return (
-    <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
+    <Sheet
+      {...other}
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset();
+          closeSheet();
+        }
+      }}
+    >
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{getTitle(crypt_type)}</SheetTitle>
@@ -245,10 +253,7 @@ function AddCryptFormSheet(props: AddCryptFormSheetProps) {
               )}
             </div>
             <SheetFooter>
-              <Button
-                type="submit"
-                disabled={addMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
-              >
+              <Button type="submit" disabled={addMutation.isPending || !form.formState.isDirty}>
                 {addMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
                 Add
               </Button>

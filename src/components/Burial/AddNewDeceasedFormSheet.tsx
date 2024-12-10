@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { DialogProps } from '@radix-ui/react-dialog';
 import { CalendarIcon } from 'lucide-react';
@@ -24,11 +24,11 @@ import { paths } from '@/navigation/Routes';
 import { Combobox, ComboBoxItemType } from '@/components/ui/combobox';
 import { searchClient } from '@/supabase-client/queries/clients';
 import { useState } from 'react';
-import { CryptSlotStatus, CryptType } from '@/types/crypt-types';
+import { CryptSlotFormSchema, CryptSlotStatus, CryptType } from '@/types/crypt-types';
 import { addCryptSlot } from '@/supabase-client/mutations/crypt';
 
 function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
-  const { cryptId, closeSheet, ...other } = props;
+  const { cryptId, cryptType, slotPayload, closeSheet, successCallBack, description, ...other } = props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -65,6 +65,7 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
           title: 'Deceased added successfully',
         });
       });
+      if (successCallBack) successCallBack();
     },
     onError: (error) => {
       toast({
@@ -77,7 +78,7 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
   const onSubmit: SubmitHandler<z.infer<typeof DeceasedFormSchema>> = (data) => {
     addCryptSlot({
       crypt_id: cryptId,
-      crypt_type: CryptType.COMMON,
+      crypt_type: cryptType,
       status: CryptSlotStatus.OCCUPIED,
       occupied_by: data.client_id,
       angle: null,
@@ -89,6 +90,7 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
       row: null,
       slot: null,
       width: null,
+      ...slotPayload,
     }).then((slot) => addMutation.mutate({ ...data, slot_id: slot.id }));
   };
 
@@ -103,10 +105,19 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
   };
 
   return (
-    <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
+    <Sheet
+      {...other}
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset();
+          closeSheet();
+        }
+      }}
+    >
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Add New Deceased</SheetTitle>
+          {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
         <Form {...form}>
           <form className="mt-4 space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -366,10 +377,7 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
               />
             </div>
             <SheetFooter>
-              <Button
-                type="submit"
-                disabled={addMutation.isPending || !form.formState.isDirty || !form.formState.isValid}
-              >
+              <Button type="submit" disabled={addMutation.isPending || !form.formState.isDirty}>
                 {addMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
                 Add
               </Button>
@@ -383,7 +391,11 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
 
 type AddNewDeceasedFormSheetProps = {
   cryptId: string;
+  cryptType: CryptType;
+  slotPayload?: Partial<z.infer<typeof CryptSlotFormSchema>>;
   closeSheet: () => void;
+  successCallBack?: () => void;
+  description?: string;
 } & DialogProps;
 
 export default AddNewDeceasedFormSheet;

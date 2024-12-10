@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { ClientResponse } from './clients-types';
+import { DeceasedResponse } from './deceased-types';
 
 export enum CryptType {
   COFFIN = 'COFFIN',
@@ -49,6 +51,8 @@ export type CryptSlotResponse = {
   length: number | null;
   width: number | null;
   angle: number | null;
+  client_list: ClientResponse;
+  deceased_list: Array<DeceasedResponse>;
 };
 
 export const CryptFormSchema = z.object({

@@ -7,9 +7,9 @@ export async function getDeceasedListByCryptId(cryptId: string, page: number, pa
 
   const { data, count, error } = await supabase
     .from('deceased_list')
-    .select('*', { count: 'exact' })
+    .select('*, client_list (*)', { count: 'exact' })
     .range(start, end)
-    .eq('crypt_id', cryptId);
+    .eq('crypt_id', cryptId).order('created_at', { ascending: true });
 
   if (error) {
     throw error;

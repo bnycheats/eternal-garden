@@ -1,6 +1,7 @@
 import sizeInMB, { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '@/utils/sizeInMB';
 import { Gender } from '.';
 import { z } from 'zod';
+import { ClientResponse } from './clients-types';
 
 export enum IntermentType {
   '1st_Interment' = '1st Interment',
@@ -29,6 +30,7 @@ export type DeceasedResponse = {
   interment_type: IntermentType;
   deceased_type: DeceasedType;
   client_id: string;
+  client_list: ClientResponse;
 };
 
 export const DeceasedFormSchema = z.object({
@@ -68,9 +70,18 @@ export const DeceasedFormSchema = z.object({
   client_id: z.string().min(1, { message: 'This field is required' }),
 });
 
-export type DeceasedRequest = Omit<
-  z.infer<typeof DeceasedFormSchema>,
-  'death_certificate'
-> & {
+export type DeceasedRequest = Omit<z.infer<typeof DeceasedFormSchema>, 'death_certificate'> & {
   death_certificate?: string;
 };
+
+export const UpdateDeceasedFormSchema = DeceasedFormSchema.extend({
+  death_certificate: z
+    .custom<File>()
+    .nullable()
+    .refine((file) => {
+      return !file || ACCEPTED_IMAGE_TYPES.includes(file?.type);
+    }, 'File type is not supported')
+    .refine((file) => {
+      return !file || sizeInMB(file?.size) <= MAX_IMAGE_SIZE;
+    }, `The maximum image size is ${MAX_IMAGE_SIZE}MB`),
+});

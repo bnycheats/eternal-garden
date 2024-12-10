@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card';
 import { FaRegBuilding } from 'react-icons/fa';
-import { AiFillEdit, AiFillEye, AiFillDelete, AiOutlineUserAdd } from 'react-icons/ai';
+import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai';
 import InfoBox from './InfoBox';
 import { ReactNode } from 'react';
 
@@ -8,7 +8,6 @@ function CryptCard(props: CryptCardProps) {
   const {
     icon = <FaRegBuilding className="text-8xl" />,
     bgColor,
-    handleSelectClient,
     handleNavigate,
     handleRemove,
     handleEdit,
@@ -18,11 +17,6 @@ function CryptCard(props: CryptCardProps) {
   return (
     <Card className="relative rounded-none hover:shadow-lg">
       <div className="absolute right-2 top-2 flex gap-2 text-white">
-        {handleSelectClient && (
-          <button onClick={handleSelectClient}>
-            <AiOutlineUserAdd />
-          </button>
-        )}
         {handleNavigate && (
           <button onClick={handleNavigate}>
             <AiFillEye />
@@ -58,7 +52,6 @@ function CryptCard(props: CryptCardProps) {
 type CryptCardProps = {
   icon?: ReactNode;
   bgColor: string;
-  handleSelectClient?: () => void;
   handleNavigate?: () => void;
   handleRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleEdit?: (e: React.MouseEvent<HTMLButtonElement>) => void;

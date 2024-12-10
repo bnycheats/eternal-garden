@@ -20,11 +20,13 @@ export const paths = {
     LAWN_SLOTS: '/lawn/:id/slots',
     MAUSOLEUM: '/mausoleum',
     MAUSOLEUM_MAP: '/mausoleum/map',
+    MAUSOLEUM_DECEASED_LIST: '/mausoleum/:id/list',
     COMMON_AREA: '/common-area',
     COMMON_AREA_MAP: '/common-area/map',
     COMMON_AREA_DECEASED_LIST: '/common-area/:id/list',
     ANNEX: '/annex',
     ANNEX_MAP: '/annex/map',
+    ANNEX_DECEASED_LIST: '/annex/:id/list',
     CLIENTS: '/clients',
     CLIENTS_CREATE: '/clients/create',
     CLIENTS_EDIT: '/clients/edit/:clientId',
@@ -183,6 +185,14 @@ export const routes: Array<RouteObject> = [
             errorElement: <ErrorBoundary />,
           },
           {
+            path: paths.authenticated.MAUSOLEUM_DECEASED_LIST,
+            lazy: () => import('@/pages/mausoleum/DeceasedList'),
+            handle: {
+              title: 'Mausoleum Deceased List',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
             path: paths.authenticated.COMMON_AREA,
             lazy: () => import('@/pages/common-area/List'),
             handle: {
@@ -219,6 +229,14 @@ export const routes: Array<RouteObject> = [
             lazy: () => import('@/pages/annex/Map'),
             handle: {
               title: 'Annex Map',
+            },
+            errorElement: <ErrorBoundary />,
+          },
+          {
+            path: paths.authenticated.ANNEX_DECEASED_LIST,
+            lazy: () => import('@/pages/annex/DeceasedList'),
+            handle: {
+              title: 'Annex Deceased List',
             },
             errorElement: <ErrorBoundary />,
           },

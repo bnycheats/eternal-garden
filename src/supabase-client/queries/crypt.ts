@@ -33,7 +33,10 @@ export async function getCrypt(id: string) {
 }
 
 export async function getCryptSlotByCryptId(crypt_id: string) {
-  const { data, error } = await supabase.from('crypt_slot').select('*').eq('crypt_id', crypt_id);
+  const { data, error } = await supabase
+    .from('crypt_slot')
+    .select('*, client_list (*), deceased_list(*)')
+    .eq('crypt_id', crypt_id);
 
   if (error) {
     throw error;
@@ -42,9 +45,11 @@ export async function getCryptSlotByCryptId(crypt_id: string) {
   return data as Array<CryptSlotResponse>;
 }
 
-
 export async function getCryptSlotByType(type: CryptType) {
-  const { data, error } = await supabase.from('crypt_slot').select('*').eq('crypt_type', type);
+  const { data, error } = await supabase
+    .from('crypt_slot')
+    .select('*, client_list (*), deceased_list(*)')
+    .eq('crypt_type', type);
 
   if (error) {
     throw error;

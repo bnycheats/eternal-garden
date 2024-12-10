@@ -1,19 +1,20 @@
 import { useState, Fragment } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLoaderData, useParams } from 'react-router-dom';
 import NichesCard from '@/components/Burial/NichesCard';
 import Legend from './components/Legend';
-import SelectCryptSlotFormSheet from '@/components/Burial/SelectCryptSlotFormSheet';
-import { type CryptResponse, type CryptSlotResponse, CryptSlotStatus, CryptType, Face } from '@/types/crypt-types';
+import { type CryptResponse, type CryptSlotResponse, CryptType, Face } from '@/types/crypt-types';
 import getCryptQuery from '@/queries/getCryptQuery';
 import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
-import ViewCryptInfoSheet from '@/components/Burial/ViewCryptInfoSheet';
+import AddNewDeceasedFormSheet from '@/components/Burial/AddNewDeceasedFormSheet';
+import ViewDetailsSheet from '@/components/Burial/ViewDetailsSheet';
 
 export { default as loader } from '@/loaders/slotsLoader';
 
 export function Component() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const { initialCrypt, initialCryptSlot } = useLoaderData() as {
     initialCrypt: CryptResponse;
@@ -71,28 +72,23 @@ export function Component() {
 
   return (
     <Fragment>
-      <ViewCryptInfoSheet info={viewSlot} open={!!viewSlot} closeSheet={() => setViewSlot(null)} />
-      {selectedSlot && (
-        <SelectCryptSlotFormSheet
-          slotDetails={{
-            crypt_id: id ?? '',
-            occupied_by: null,
-            crypt_type: CryptType.COFFIN,
-            row: Math.ceil((selectedSlot?.slot ?? 0) / (crypt?.columns ?? 0)),
-            column: (selectedSlot?.slot ?? 0) % (crypt?.columns ?? 0),
-            lon: null,
-            lat: null,
-            status: CryptSlotStatus.OCCUPIED,
-            angle: null,
-            length: null,
-            width: null,
-            ...selectedSlot,
-          }}
-          open={openAddSheet}
-          closeSheet={closeAddSheet}
-        />
-      )}
-
+      <ViewDetailsSheet info={viewSlot} open={!!viewSlot} closeSheet={() => setViewSlot(null)} />
+      <AddNewDeceasedFormSheet
+        description={`Slot ${selectedSlot?.slot} - ${selectedSlot?.face}`}
+        cryptId={id ?? ''}
+        cryptType={CryptType.COMMON}
+        slotPayload={{
+          crypt_type: CryptType.COFFIN,
+          row: Math.ceil((selectedSlot?.slot ?? 0) / (crypt?.columns ?? 0)),
+          column: (selectedSlot?.slot ?? 0) % (crypt?.columns ?? 0),
+          ...selectedSlot,
+        }}
+        open={openAddSheet}
+        closeSheet={closeAddSheet}
+        successCallBack={() => {
+          queryClient.invalidateQueries({ queryKey: ['getCryptSlot', id] });
+        }}
+      />
       {niches.map((item, index) => (
         <NichesCard
           key={index}

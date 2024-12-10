@@ -2,7 +2,7 @@ import { queryClientGetData } from '@/utils/query-client';
 import { LoaderFunctionArgs } from 'react-router-dom';
 import getDeceasedListByCryptIdQuery from '../queries/getDeceasedListByCryptIdQuery';
 import parseSearchParams from '@/utils/parseSearchParams';
-import { SearchParams } from '../DeceasedList';
+import { SearchParams } from '../pages/common-area/DeceasedList';
 
 const deceasedListLoader = async ({ params, request }: LoaderFunctionArgs) => {
   const { id: cryptId } = params as { id: string };
