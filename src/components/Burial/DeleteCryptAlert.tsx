@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import { deleteCrypt } from '@/supabase-client/mutations/crypt';
 import { type CryptType } from '@/types/crypt-types';
+import Spinner from '../Spinner';
 
 function DeleteCryptAlert(props: DeleteCryptAlertProps) {
   const { closeModal, title, id, cryptType, ...other } = props;
@@ -47,7 +48,17 @@ function DeleteCryptAlert(props: DeleteCryptAlertProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+          <AlertDialogAction
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleDelete();
+            }}
+            disabled={deleteMutation.isPending}
+          >
+            {deleteMutation.isPending && <Spinner className="h-5 w-5 text-white" />}
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

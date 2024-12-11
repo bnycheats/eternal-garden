@@ -3,7 +3,7 @@ import supabase from '@/supabase-client';
 import { CryptSlotResponse, CryptType, type CryptResponse } from '@/types/crypt-types';
 
 export async function getCryptList() {
-  const { data, error } = await supabase.from('crypt_list').select('*');
+  const { data, error } = await supabase.from('crypt_list').select('*').order('created_at', { ascending: true });
 
   if (error) {
     throw error;
@@ -13,7 +13,11 @@ export async function getCryptList() {
 }
 
 export async function getCryptListByType(type: CryptType) {
-  const { data, error } = await supabase.from('crypt_list').select('*').eq('crypt_type', type);
+  const { data, error } = await supabase
+    .from('crypt_list')
+    .select('*')
+    .eq('crypt_type', type)
+    .order('created_at', { ascending: true });
 
   if (error) {
     throw error;
@@ -36,7 +40,8 @@ export async function getCryptSlotByCryptId(crypt_id: string) {
   const { data, error } = await supabase
     .from('crypt_slot')
     .select('*, client_list (*), deceased_list(*)')
-    .eq('crypt_id', crypt_id);
+    .eq('crypt_id', crypt_id)
+    .order('created_at', { ascending: true });
 
   if (error) {
     throw error;
@@ -49,7 +54,8 @@ export async function getCryptSlotByType(type: CryptType) {
   const { data, error } = await supabase
     .from('crypt_slot')
     .select('*, client_list (*), deceased_list(*)')
-    .eq('crypt_type', type);
+    .eq('crypt_type', type)
+    .order('created_at', { ascending: true });
 
   if (error) {
     throw error;
