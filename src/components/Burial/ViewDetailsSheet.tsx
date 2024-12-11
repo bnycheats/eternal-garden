@@ -1,4 +1,3 @@
-import Clipboard from '@/components/Clipboard';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { paths } from '@/navigation/Routes';
 import { CryptSlotResponse, CryptType } from '@/types/crypt-types';
