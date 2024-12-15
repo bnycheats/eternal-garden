@@ -12,10 +12,10 @@ import { DeceasedResponse } from '@/types/deceased-types';
 import supabase from '@/supabase-client';
 import UpdateDeceasedFormSheet from '@/components/Burial/UpdateDeceasedFormSheet';
 
-function ActionMenu(props: ActionMenuProps) {
+function DeceasedActionMenu(props: DeceasedActionMenuProps) {
   const { data } = props;
 
-  const fullname = `${data.firstname} ${data.middlename} ${data.lastname}`;
+  const fullname = `${data.firstname} ${data.middlename ?? ''} ${data.lastname}`;
 
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
   const [openUpdateSheet, setOpenUpdateSheet] = useState(false);
@@ -46,7 +46,7 @@ function ActionMenu(props: ActionMenuProps) {
       <RemoveALert id={data.id} name={fullname} open={openRemoveAlert} closeModal={closeOpenRemoveAlert} />
       <UpdateDeceasedFormSheet data={data} open={openUpdateSheet} closeSheet={closeOpenUpdateSheet} />
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger tabIndex={-1}>
           <BiDotsVerticalRounded />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -68,8 +68,8 @@ function ActionMenu(props: ActionMenuProps) {
   );
 }
 
-type ActionMenuProps = {
+type DeceasedActionMenuProps = {
   data: DeceasedResponse;
 };
 
-export default ActionMenu;
+export default DeceasedActionMenu;

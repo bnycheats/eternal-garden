@@ -33,7 +33,7 @@ function SelectLawnFormSheet(props: SelectLawnFormSheetProps) {
     mutationFn: (request: z.infer<typeof CryptSlotFormSchema>) => updateCryptSlot(id, request),
     onSuccess: () => {
       formReset();
-      queryClient.invalidateQueries({ queryKey: ['getCryptSlot', slotDetails.crypt_id] }).then(() => {
+      queryClient.invalidateQueries({ queryKey: ['getCryptSlotByCryptId', slotDetails.crypt_id] }).then(() => {
         toast({
           variant: 'success',
           title: 'Slot occupied successfully',

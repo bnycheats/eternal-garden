@@ -23,12 +23,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { paths } from '@/navigation/Routes';
 import { Combobox, ComboBoxItemType } from '@/components/ui/combobox';
 import { searchClient } from '@/supabase-client/queries/clients';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CryptSlotFormSchema, CryptSlotStatus, CryptType } from '@/types/crypt-types';
 import { addCryptSlot } from '@/supabase-client/mutations/crypt';
 
 function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
-  const { cryptId, cryptType, slotPayload, closeSheet, successCallBack, description, ...other } = props;
+  const { clientId, slotId, cryptId, cryptType, slotPayload, closeSheet, successCallBack, description, ...other } =
+    props;
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -48,7 +49,7 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
       slot_id: null,
       crypt_id: cryptId,
       death_certificate: undefined,
-      client_id: undefined,
+      client_id: clientId,
       deceased_type: undefined,
       interment_type: undefined,
     },
@@ -76,22 +77,26 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof DeceasedFormSchema>> = (data) => {
-    addCryptSlot({
-      crypt_id: cryptId,
-      crypt_type: cryptType,
-      status: CryptSlotStatus.OCCUPIED,
-      occupied_by: data.client_id,
-      angle: null,
-      column: null,
-      face: null,
-      lat: null,
-      length: null,
-      lon: null,
-      row: null,
-      slot: null,
-      width: null,
-      ...slotPayload,
-    }).then((slot) => addMutation.mutate({ ...data, slot_id: slot.id }));
+    if (slotId) {
+      addMutation.mutate({ ...data, slot_id: slotId });
+    } else {
+      addCryptSlot({
+        crypt_id: cryptId,
+        crypt_type: cryptType,
+        status: CryptSlotStatus.OCCUPIED,
+        occupied_by: data.client_id,
+        angle: null,
+        column: null,
+        face: null,
+        lat: null,
+        length: null,
+        lon: null,
+        row: null,
+        slot: null,
+        width: null,
+        ...slotPayload,
+      }).then((slot) => addMutation.mutate({ ...data, slot_id: slot.id }));
+    }
   };
 
   const handleSearch = async (value: string) => {
@@ -103,6 +108,14 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
       })),
     );
   };
+
+  const onInit = () => {
+    if (clientId) {
+      form.setValue('client_id', clientId);
+    }
+  };
+
+  useEffect(onInit, [clientId]);
 
   return (
     <Sheet
@@ -122,33 +135,35 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
         <Form {...form}>
           <form className="mt-4 space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="client_id"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel className="mb-1 flex justify-between">
-                      <span>
-                        Occupied by{' '}
-                        <FormLabelIndicator isOptional={DeceasedFormSchema.shape[field.name].isOptional()} />
-                      </span>
-                      <Link className="text-xs text-meta-5 underline" to={paths.authenticated.CLIENTS_CREATE}>
-                        Add New Client
-                      </Link>
-                    </FormLabel>
-                    <Combobox
-                      className="w-full"
-                      searchPlaceholder="Search client..."
-                      selectItemMsg="Select client"
-                      items={searchResult}
-                      onSelect={(value) => field.onChange(value)}
-                      onSearchChange={handleSearch}
-                      value={field.value ?? ''}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {!clientId && (
+                <FormField
+                  control={form.control}
+                  name="client_id"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormLabel className="mb-1 flex justify-between">
+                        <span>
+                          Occupied by{' '}
+                          <FormLabelIndicator isOptional={DeceasedFormSchema.shape[field.name].isOptional()} />
+                        </span>
+                        <Link className="text-xs text-meta-5 underline" to={paths.authenticated.CLIENTS_CREATE}>
+                          Add New Client
+                        </Link>
+                      </FormLabel>
+                      <Combobox
+                        className="w-full"
+                        searchPlaceholder="Search client..."
+                        selectItemMsg="Select client"
+                        items={searchResult}
+                        onSelect={(value) => field.onChange(value)}
+                        onSearchChange={handleSearch}
+                        value={field.value ?? ''}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <FormField
                 control={form.control}
                 name="firstname"
@@ -390,6 +405,8 @@ function AddNewDeceasedFormSheet(props: AddNewDeceasedFormSheetProps) {
 }
 
 type AddNewDeceasedFormSheetProps = {
+  clientId?: string;
+  slotId?: string;
   cryptId: string;
   cryptType: CryptType;
   slotPayload?: Partial<z.infer<typeof CryptSlotFormSchema>>;

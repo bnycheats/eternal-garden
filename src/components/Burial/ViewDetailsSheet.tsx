@@ -1,17 +1,30 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { paths } from '@/navigation/Routes';
-import { AiFillEye, AiFillEdit, AiFillDelete } from 'react-icons/ai';
+import { AiFillEye } from 'react-icons/ai';
 import { CryptSlotResponse } from '@/types/crypt-types';
 import { DialogProps } from '@radix-ui/react-dialog';
 import { Link } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import DeceasedActionMenu from './DeceasedActionMenu';
+import { Button } from '../ui/button';
+import useCryptSlots from '@/hooks/useCryptSlots';
+import { useQuery } from '@tanstack/react-query';
+import getCryptSlotByIdQuery from '@/queries/getCryptSlotByIdQuery';
 
 function ViewDetailsSheet(props: ViewDetailsSheetProps) {
   const { header = false, closeSheet, info, ...other } = props;
+  const { handleOpenAddSheet } = useCryptSlots();
 
-  if (!info) return null;
+  const { data: details } = useQuery({
+    ...getCryptSlotByIdQuery(info?.id ?? ''),
+    enabled: !!info,
+    staleTime: 0,
+    initialData: info,
+  });
 
-  const { client_list, deceased_list } = info;
+  if (!details) return null;
+
+  const { client_list, deceased_list } = details;
 
   return (
     <Sheet {...other} onOpenChange={(open) => !open && closeSheet()}>
@@ -22,7 +35,7 @@ function ViewDetailsSheet(props: ViewDetailsSheetProps) {
         <div className="mt-2 space-y-3">
           <div className="border p-2">
             <h3 className="text-sm font-semibold">Client Details</h3>
-            {info.occupied_by && (
+            {details.occupied_by && (
               <div className="mt-2">
                 <label className="text-xs uppercase">Occupied by</label>
                 <div className="flex gap-2 font-semibold">
@@ -30,7 +43,7 @@ function ViewDetailsSheet(props: ViewDetailsSheetProps) {
                   <TooltipProvider delayDuration={100}>
                     <Tooltip>
                       <TooltipTrigger tabIndex={-1} asChild>
-                        <Link to={`${paths.authenticated.CLIENTS}/${info.occupied_by}`}>
+                        <Link to={`${paths.authenticated.CLIENTS}/${details.occupied_by}`}>
                           <AiFillEye className="text-meta-5" />
                         </Link>
                       </TooltipTrigger>
@@ -44,81 +57,91 @@ function ViewDetailsSheet(props: ViewDetailsSheetProps) {
           <div className="border p-2">
             <h3 className="text-sm font-semibold">Slot Details</h3>
             <div className="mt-3 grid grid-cols-2 gap-2">
-              {info.slot && (
+              {details.slot && (
                 <div>
                   <label className="text-xs uppercase">Slot</label>
-                  <p className="font-bold">{info.slot}</p>
+                  <p className="font-bold">{details.slot}</p>
                 </div>
               )}
-              {info.face && (
+              {details.face && (
                 <div>
                   <label className="text-xs uppercase">Face</label>
-                  <p className="font-bold">{info.face}</p>
+                  <p className="font-bold">{details.face}</p>
                 </div>
               )}
-              {info.status && (
+              {details.status && (
                 <div>
                   <label className="text-xs uppercase">Status</label>
-                  <p className="font-bold">{info.status}</p>
+                  <p className="font-bold">{details.status}</p>
                 </div>
               )}
-              {info.crypt_type && (
+              {details.crypt_type && (
                 <div>
                   <label className="text-xs uppercase">Crypt Type</label>
-                  <p className="font-bold">{info.crypt_type}</p>
+                  <p className="font-bold">{details.crypt_type}</p>
                 </div>
               )}
-              {info.row && (
+              {details.row && (
                 <div>
                   <label className="text-xs uppercase">Row</label>
-                  <p className="font-bold">{info.row}</p>
+                  <p className="font-bold">{details.row}</p>
                 </div>
               )}
-              {info.column && (
+              {details.column && (
                 <div>
                   <label className="text-xs uppercase">Column</label>
-                  <p className="font-bold">{info.column}</p>
+                  <p className="font-bold">{details.column}</p>
                 </div>
               )}
-              {info.width && (
+              {details.width && (
                 <div>
                   <label className="text-xs uppercase">Width</label>
-                  <p className="font-bold">{info.width} meter(s)</p>
+                  <p className="font-bold">{details.width} meter(s)</p>
                 </div>
               )}
-              {info.length && (
+              {details.length && (
                 <div>
                   <label className="text-xs uppercase">Length</label>
-                  <p className="font-bold">{info.length} meter(s)</p>
+                  <p className="font-bold">{details.length} meter(s)</p>
                 </div>
               )}
-              {info.angle && (
+              {details.angle && (
                 <div>
                   <label className="text-xs uppercase">Angle</label>
-                  <p className="font-bold">{info.angle}</p>
+                  <p className="font-bold">{details.angle}</p>
                 </div>
               )}
-              {info.coordinates && (
+              {details.coordinates && (
                 <div>
                   <label className="text-xs uppercase">Coordinates</label>
-                  <p className="font-bold">{info.coordinates}</p>
+                  <p className="font-bold">{details.coordinates}</p>
                 </div>
               )}
             </div>
           </div>
           <div className="border p-2">
-            <h3 className="text-sm font-semibold">Deceased List</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold">Deceased List</h3>
+              <Button
+                size="sm"
+                variant="link"
+                tabIndex={-1}
+                className="h-auto p-0 text-xs underline"
+                onClick={() => {
+                  if (handleOpenAddSheet && details.slot && details.face) {
+                    handleOpenAddSheet({ slot: details.slot, face: details.face }, details.id);
+                  }
+                }}
+              >
+                Add New Deceased
+              </Button>
+            </div>
             <ul className="mt-3 space-y-2">
               {deceased_list?.map((item, index) => (
-                <li key={index} className="flex items-center justify-between">
+                <li key={index} className="flex items-center justify-between text-xs">
                   <span>{`${item.firstname} ${item.middlename ?? ''} ${item.lastname}`}</span>
                   <div className="flex gap-2">
-                    <button>
-                      <AiFillEdit className="text-meta-5" />
-                    </button>
-                    <button>
-                      <AiFillDelete className="text-meta-1" />
-                    </button>
+                    <DeceasedActionMenu data={item} />
                   </div>
                 </li>
               ))}

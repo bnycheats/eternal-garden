@@ -1,33 +1,39 @@
-import { useState, Fragment } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Fragment } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useLoaderData, useParams } from 'react-router-dom';
 import NichesCard from '@/components/Burial/NichesCard';
 import Legend from './components/Legend';
 import { type CryptResponse, type CryptSlotResponse, CryptType, Face } from '@/types/crypt-types';
 import getCryptQuery from '@/queries/getCryptQuery';
-import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
+import getCryptSlotByCryptIdQuery from '@/queries/getCryptSlotByCryptIdQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
-import AddNewDeceasedFormSheet from '@/components/Burial/AddNewDeceasedFormSheet';
-import ViewDetailsSheet from '@/components/Burial/ViewDetailsSheet';
+import { CryptSlotsProvider } from '@/providers/CryptSlotsProvider';
+import useCryptSlots from '@/hooks/useCryptSlots';
 
 export { default as loader } from '@/loaders/slotsLoader';
 
 export function Component() {
   const { id } = useParams();
-  const queryClient = useQueryClient();
 
   const { initialCrypt, initialCryptSlot } = useLoaderData() as {
     initialCrypt: CryptResponse;
     initialCryptSlot: Array<CryptSlotResponse>;
   };
 
-  const [openAddSheet, setOpenAddSheet] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<SelectedSlot | null>(null);
-  const [viewSlot, setViewSlot] = useState<CryptSlotResponse | null>(null);
-
   const { data: crypt } = useQuery({ ...getCryptQuery(id ?? ''), initialData: initialCrypt });
 
-  const { data: cryptSlot } = useQuery({ ...getCryptSlotQuery(id ?? ''), initialData: initialCryptSlot });
+  const { data: cryptSlot } = useQuery({ ...getCryptSlotByCryptIdQuery(id ?? ''), initialData: initialCryptSlot });
+
+  return (
+    <CryptSlotsProvider cryptId={id ?? ''} cryptType={CryptType.COFFIN} crypt={crypt}>
+      <List crypt={crypt} cryptSlot={cryptSlot} />
+    </CryptSlotsProvider>
+  );
+}
+
+function List(props: ListProps) {
+  const { crypt, cryptSlot } = props;
+  const { handleOpenAddSheet, handleOpenViewSheet } = useCryptSlots();
 
   const slots = (crypt?.rows ?? 0) * (crypt?.columns ?? 0) * 2;
 
@@ -37,16 +43,8 @@ export function Component() {
   const handleSelectSlot = (slot: number, face: Face) => {
     const findOwner = cryptSlot?.find((item) => item.slot === slot);
     if (findOwner) {
-      setViewSlot(findOwner);
-    } else {
-      setOpenAddSheet(true);
-      setSelectedSlot({ slot, face });
-    }
-  };
-
-  const closeAddSheet = () => {
-    setOpenAddSheet(false);
-    setTimeout(() => setSelectedSlot(null), 300);
+      handleOpenViewSheet(findOwner);
+    } else handleOpenAddSheet({ slot, face });
   };
 
   const niches = [
@@ -72,23 +70,6 @@ export function Component() {
 
   return (
     <Fragment>
-      <ViewDetailsSheet info={viewSlot} open={!!viewSlot} closeSheet={() => setViewSlot(null)} />
-      <AddNewDeceasedFormSheet
-        description={`Slot ${selectedSlot?.slot} - ${selectedSlot?.face}`}
-        cryptId={id ?? ''}
-        cryptType={CryptType.COMMON}
-        slotPayload={{
-          crypt_type: CryptType.COFFIN,
-          row: Math.ceil((selectedSlot?.slot ?? 0) / (crypt?.columns ?? 0)),
-          column: (selectedSlot?.slot ?? 0) % (crypt?.columns ?? 0),
-          ...selectedSlot,
-        }}
-        open={openAddSheet}
-        closeSheet={closeAddSheet}
-        successCallBack={() => {
-          queryClient.invalidateQueries({ queryKey: ['getCryptSlot', id] });
-        }}
-      />
       {niches.map((item, index) => (
         <NichesCard
           key={index}
@@ -105,7 +86,7 @@ export function Component() {
   );
 }
 
-type SelectedSlot = {
-  slot: number;
-  face: Face;
+type ListProps = {
+  crypt: CryptResponse;
+  cryptSlot: Array<CryptSlotResponse>;
 };

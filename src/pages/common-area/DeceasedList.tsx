@@ -11,7 +11,7 @@ import DataTable from '@/components/DataTable';
 import { DEFAULT_PAGE, DEFAULT_SIZE } from '@/constants';
 import useCustomSearchParams from '@/hooks/useCustomSearchParams';
 import calculateAgeDied from '@/utils/calculateAgeDied';
-import ActionMenu from '../../components/Burial/ActionMenu';
+import DeceasedActionMenu from '../../components/Burial/DeceasedActionMenu';
 import { format } from 'date-fns';
 import { CryptType } from '@/types/crypt-types';
 
@@ -102,7 +102,7 @@ export function Component() {
           {
             header: '',
             accessorKey: 'action',
-            cell: ({ row }) => <ActionMenu data={row.original} />,
+            cell: ({ row }) => <DeceasedActionMenu data={row.original} />,
           },
         ]}
         paginationOption={{

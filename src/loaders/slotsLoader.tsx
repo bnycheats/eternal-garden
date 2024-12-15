@@ -1,7 +1,7 @@
 import { queryClientGetData } from '@/utils/query-client';
 import { LoaderFunctionArgs } from 'react-router-dom';
 import getCryptQuery from '@/queries/getCryptQuery';
-import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
+import getCryptSlotQuery from '@/queries/getCryptSlotByCryptIdQuery';
 
 const slotsLoader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params as { id: string };

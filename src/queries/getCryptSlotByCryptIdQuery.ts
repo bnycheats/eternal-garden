@@ -1,10 +1,10 @@
 import { getCryptSlotByCryptId } from '@/supabase-client/queries/crypt';
 
-function getCryptSlotQuery(id: string) {
+function getCryptSlotByCryptIdQuery(id: string) {
   return {
-    queryKey: ['getCryptSlot', id],
+    queryKey: ['getCryptSlotByCryptId', id],
     queryFn: () => getCryptSlotByCryptId(id),
   };
 }
 
-export default getCryptSlotQuery;
+export default getCryptSlotByCryptIdQuery;

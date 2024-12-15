@@ -29,6 +29,7 @@ function RemoveALert(props: RemoveALertProps) {
           title: 'Deceased removed successfully',
         });
       });
+      queryClient.invalidateQueries({ queryKey: ['getCryptSlotById'] });
     },
     onError: (error) => {
       toast({

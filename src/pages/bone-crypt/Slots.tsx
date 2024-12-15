@@ -5,7 +5,7 @@ import NichesCard from '@/components/Burial/NichesCard';
 import SelectCryptSlotFormSheet from '@/components/Burial/SelectCryptSlotFormSheet';
 import { type CryptResponse, type CryptSlotResponse, CryptSlotStatus, CryptType, Face } from '@/types/crypt-types';
 import getCryptQuery from '@/queries/getCryptQuery';
-import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
+import getCryptSlotQuery from '@/queries/getCryptSlotByCryptIdQuery';
 import usePrivateHeader from '@/hooks/usePrivateHeader';
 import Legend from './components/Legend';
 import ViewCryptInfoSheet from '@/components/Burial/ViewCryptInfoSheet';

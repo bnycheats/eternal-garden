@@ -6,7 +6,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import { CryptResponse, CryptSlotResponse, CryptSlotStatus } from '@/types/crypt-types';
 import { useQuery } from '@tanstack/react-query';
 import getCryptQuery from '@/queries/getCryptQuery';
-import getCryptSlotQuery from '@/queries/getCryptSlotQuery';
+import getCryptSlotQuery from '@/queries/getCryptSlotByCryptIdQuery';
 import Legend from './components/Legends';
 import { Button } from '@/components/ui/button';
 import AddLawnFormSheet from './components/AddLawnFormSheet';
