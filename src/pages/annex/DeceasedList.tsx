@@ -49,7 +49,7 @@ export function Component() {
     extra: (
       <div className="flex justify-center">
         <Button size="sm" onClick={handleOpenAddSheet}>
-          Add New Deceased
+          Add New Deceaseds
         </Button>
       </div>
     ),
